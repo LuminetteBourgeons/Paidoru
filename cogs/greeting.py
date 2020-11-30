@@ -20,7 +20,7 @@ class GreetingMessage(commands.Cog):
         self.bot_owner = col_botinfo.find_one()['owner']
         self.emj = [
             '\N{WHITE HEAVY CHECK MARK}',
-            '\U0000274e'
+            '\N{NEGATIVE SQUARED CROSS MARK}'
         ]
 
     @commands.Cog.listener()
@@ -39,39 +39,35 @@ class GreetingMessage(commands.Cog):
             return
         await member.send(greet_str)
 
-    @commands.command(name='run')
-    async def cmd_start_greeting_message(self, ctx):
+    @commands.command()
+    async def run(self, ctx):
         if not ctx.message.guild:
             return
         if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
                 col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
-            await ctx.send('the command has started', delete_after=15)
+            await ctx.send('the command has started', delete_after=3)
             return
 
-        approve_message = await ctx.send('are you sure you want to run the greeting message privately',
-                                         delete_after=15)
-        await approve_message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-        await approve_message.add_reaction('\U0000274e')
+        confirm_message = await ctx.send('are you sure you want to run the greeting message privately')
+        await confirm_message.add_reaction(self.emj[0])
+        await confirm_message.add_reaction(self.emj[1])
 
         def check(reaction, user):
             return str(reaction.emoji) in self.emj and ctx.author == user
 
         try:
-            # Timeout parameter is optional but sometimes can be useful
             reaction, user = await self.client.wait_for('reaction_add', timeout=10, check=check)
             print(str(reaction))
             if str(reaction) == '\N{WHITE HEAVY CHECK MARK}':
                 col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting': True}})
-                await ctx.send('the greeting message has started', delete_after=5)
-                print('approve')
+                await confirm_message.edit(content='the greeting message has started')
+            else:
+                await confirm_message.edit(content='Canceled')
 
-            # await target_user.send(message.content)
         except asyncio.TimeoutError:
-
-            # when wait_for reaches specified timeout duration (in this example it is 30 seconds)
-            await ctx.send("You ran out of time!")
+            await confirm_message.edit(content="You ran out of time!")
 
     @commands.command(name="stop")
     async def cmd_stop_greeting_message(self, ctx):
@@ -84,34 +80,47 @@ class GreetingMessage(commands.Cog):
             await ctx.send('the command has stopped', delete_after=5)
             return
 
-        approve_message = await ctx.send('are you sure you want to stop the greeting message privately',
+        col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting': False}})
+        await ctx.send('the greeting message has stopped', delete_after=5)
+
+    @commands.group(name='change')
+    async def group_change(self, ctx):
+        if not ctx.message.guild:
+            return
+        if ctx.invoked_subcommand is None:
+            await ctx.send('Invalid git command passed...')
+
+    @group_change.command(name='message')
+    async def change_message(self, ctx):
+        if ctx.author == self.client.user:
+            return
+        if not ctx.message.guild:
+            return
+        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+                col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+            return
+        confirm_message = await ctx.send('are you sure you want to change the greeting message',
                                          delete_after=15)
-        await approve_message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
-        await approve_message.add_reaction('\U0000274e')
+        await confirm_message.add_reaction(self.emj[0])
+        await confirm_message.add_reaction(self.emj[1])
+        col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting_message': ctx.message.content}})
 
         def check(reaction, user):
             return str(reaction.emoji) in self.emj and ctx.author == user
 
         try:
-            # Timeout parameter is optional but sometimes can be useful
             reaction, user = await self.client.wait_for('reaction_add', timeout=10, check=check)
             print(str(reaction))
             if str(reaction) == '\N{WHITE HEAVY CHECK MARK}':
-                col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting': False}})
-                await ctx.send('the greeting message has started', delete_after=5)
-                print('approve')
+                await confirm_message.edit(content='the greeting message has been changed')
+            else:
+                await confirm_message.edit(content='Canceled')
 
-            # await target_user.send(message.content)
         except asyncio.TimeoutError:
+            await confirm_message.edit(content="You ran out of time!")
 
-            # when wait_for reaches specified timeout duration (in this example it is 30 seconds)
-            await ctx.send("You ran out of time!")
 
-    @commands.command(name='message')
-    async def cmd_change_greeting_message(self, ctx):
-        if not ctx.message.guild:
-            return
-        print(ctx.message.content)
+        pass
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
