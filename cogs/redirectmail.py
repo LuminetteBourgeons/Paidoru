@@ -39,8 +39,8 @@ class RedirectMail(commands.Cog):
                 return
             guild_owner = self.client.get_user(guild_owner_id)
 
-            print(f'author : {message.author}')
-            print(f'message: {message.content}')
+            # print(f'author : {message.author}')
+            # print(f'message: {message.content}')
 
             confirm_emoji = ['\N{WHITE HEAVY CHECK MARK}',
                              '\N{NEGATIVE SQUARED CROSS MARK}',
@@ -63,7 +63,7 @@ class RedirectMail(commands.Cog):
             await confirm_message.add_reaction(confirm_emoji[1])
 
             def check(reaction, user):
-                print('check check')
+                # print('check check')
                 return str(reaction.emoji) in confirm_emoji and message.author == user
 
             loop = True
@@ -73,12 +73,12 @@ class RedirectMail(commands.Cog):
                     self.client.wait_for('reaction_remove', check=check, timeout=30),
                     self.client.wait_for('reaction_add', check=check, timeout=30)
                 ], return_when=asyncio.FIRST_COMPLETED)
-                print('check done')
+                # print('check done')
                 embed_after_reac = discord.Embed(title='Done')
                 try:
-                    print('try done')
+                    # print('try done')
                     reaction, user = done.pop().result()
-                    print('pop done')
+                    # print('pop done')
                     index = confirm_emoji.index(str(reaction))
                     if index == 0:
                         send_embed = discord.Embed(
@@ -109,7 +109,7 @@ class RedirectMail(commands.Cog):
                     await confirm_message.remove_reaction(confirm_emoji[1], self.client.user)
 
                 except asyncio.TimeoutError:
-                    print('timeout')
+                    # print('timeout')
                     await confirm_message.edit(embed=None, content='Time Out')
                     await confirm_message.remove_reaction(confirm_emoji[0], self.client.user)
                     await confirm_message.remove_reaction(confirm_emoji[1], self.client.user)

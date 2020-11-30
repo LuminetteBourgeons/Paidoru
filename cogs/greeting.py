@@ -32,9 +32,9 @@ class GreetingMessage(commands.Cog):
         print('new member join')
         if col_serverinfo.find_one()['greeting'] is False:
             return
-        print('new member join 2')
+        # print('new member join 2')
         greet_str = col_serverinfo.find_one({'guild': member.guild.id})['greeting_message']
-        print(member.guild.id)
+        # print(member.guild.id)
         if greet_str is None:
             return
         await member.send(greet_str)
@@ -60,7 +60,7 @@ class GreetingMessage(commands.Cog):
 
         try:
             reaction, user = await self.client.wait_for('reaction_add', timeout=10, check=check)
-            print(str(reaction))
+            # print(str(reaction))
             if str(reaction) == '\N{WHITE HEAVY CHECK MARK}':
                 col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting': True}})
                 await confirm_message.edit(content='the greeting message has started')
@@ -116,7 +116,7 @@ class GreetingMessage(commands.Cog):
 
         try:
             reaction, user = await self.client.wait_for('reaction_add', timeout=10, check=check)
-            print(str(reaction))
+            # print(str(reaction))
             if str(reaction) == '\N{WHITE HEAVY CHECK MARK}':
                 await confirm_message.edit(content='the greeting message has been changed')
             else:

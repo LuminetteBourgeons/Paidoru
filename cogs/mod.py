@@ -52,8 +52,8 @@ class Mod(commands.Cog):
             "greeting":False,
             "greeting_message":"Hai selamat datang di channel ini!",
         }
-        print(f'{ctx.guild.id}')
-        print(list(col_serverinfo.find()))
+        # print(f'{ctx.guild.id}')
+        # print(list(col_serverinfo.find()))
         if col_serverinfo.find_one() is None:
             col_serverinfo.insert_one(serverinfo)
             await ctx.send(f"hi <@{ctx.author.id}>!!!, this server is ready to use mailmod", delete_after=5)
