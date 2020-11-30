@@ -103,7 +103,9 @@ class GreetingMessage(commands.Cog):
                                          delete_after=15)
         await confirm_message.add_reaction(self.emj[0])
         await confirm_message.add_reaction(self.emj[1])
-        col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting_message': ctx.message.content}})
+        cmd = 'm. change message '
+        col_serverinfo.update_one({'guild': ctx.guild.id},
+                                  {'$set': {'greeting_message': ctx.message.content.replace(cmd, '')}})
 
         def check(reaction, user):
             return str(reaction.emoji) in self.emj and ctx.author == user
