@@ -40,11 +40,12 @@ class GreetingMessage(commands.Cog):
         await member.send(greet_str)
 
     @commands.command()
+    @commands.is_owner()
     async def run(self, ctx):
         if not ctx.message.guild:
             return
-        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-                col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+        # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+        #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
             await ctx.send('the command has started', delete_after=3)
@@ -70,11 +71,12 @@ class GreetingMessage(commands.Cog):
             await confirm_message.edit(content="You ran out of time!")
 
     @commands.command(name="stop")
+    @commands.is_owner()
     async def cmd_stop_greeting_message(self, ctx):
         if not ctx.message.guild:
             return
-        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-                col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+        # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+        #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is False:
             await ctx.send('the command has stopped', delete_after=5)
@@ -84,6 +86,7 @@ class GreetingMessage(commands.Cog):
         await ctx.send('the greeting message has stopped', delete_after=5)
 
     @commands.group(name='change')
+    @commands.is_owner()
     async def group_change(self, ctx):
         if not ctx.message.guild:
             return
@@ -91,13 +94,14 @@ class GreetingMessage(commands.Cog):
             await ctx.send('Invalid git command passed...')
 
     @group_change.command(name='message')
+    @commands.is_owner()
     async def change_message(self, ctx):
         if ctx.author == self.client.user:
             return
         if not ctx.message.guild:
             return
-        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-                col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+        # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+        #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         confirm_message = await ctx.send('are you sure you want to change the greeting message',
                                          delete_after=15)

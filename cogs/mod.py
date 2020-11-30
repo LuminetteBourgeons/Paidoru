@@ -42,10 +42,9 @@ class Mod(commands.Cog):
         await user.send('This bot can only be used by server owners, bot owners, and admins')
 
     @commands.command(name='setup')
+    @commands.is_owner()
     async def cmd_setup(self, ctx):
         if not ctx.guild:
-            return
-        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id]:
             return
         serverinfo = {
             "guild": ctx.guild.id,
