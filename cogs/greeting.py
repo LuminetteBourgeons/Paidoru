@@ -17,7 +17,7 @@ col_greeting_msg = myDB['greeting_msg']
 class GreetingMessage(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.bot_owner = col_botinfo.find_one()['owner_bot']
+        self.bot_owner = col_botinfo.find_one()['owner']
         self.emj = [
             '\N{WHITE HEAVY CHECK MARK}',
             '\U0000274e'
@@ -41,7 +41,10 @@ class GreetingMessage(commands.Cog):
 
     @commands.command(name='run')
     async def cmd_start_greeting_message(self, ctx):
-        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id]:
+        if not ctx.message.guild:
+            return
+        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+                col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
             await ctx.send('the command has started', delete_after=15)
@@ -72,7 +75,10 @@ class GreetingMessage(commands.Cog):
 
     @commands.command(name="stop")
     async def cmd_stop_greeting_message(self, ctx):
-        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id]:
+        if not ctx.message.guild:
+            return
+        if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+                col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is False:
             await ctx.send('the command has stopped', delete_after=5)
@@ -103,6 +109,8 @@ class GreetingMessage(commands.Cog):
 
     @commands.command(name='message')
     async def cmd_change_greeting_message(self, ctx):
+        if not ctx.message.guild:
+            return
         print(ctx.message.content)
 
     @commands.Cog.listener()

@@ -20,7 +20,7 @@ col_greeting_msg = myDB['greeting_msg']
 class Mod(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.bot_owner = col_botinfo.find_one()['owner_bot']
+        self.bot_owner = col_botinfo.find_one()['owner']
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -33,7 +33,6 @@ class Mod(commands.Cog):
             "guild_owner": guild.owner.id,
             "greeting":False,
             "greeting_message": "Hai selamat datang di channel ini!",
-            "admin": []
         }
         print(serverinfo)
         if col_serverinfo.find_one({'guild': guild.id}) is None:
@@ -53,15 +52,14 @@ class Mod(commands.Cog):
             "guild_owner": ctx.guild.owner.id,
             "greeting":False,
             "greeting_message":"Hai selamat datang di channel ini!",
-            "admin": []
         }
         print(f'{ctx.guild.id}')
-        # print(col_serverinfo.find_one({'guild': ctx.guild.id}))
         print(list(col_serverinfo.find()))
-        if col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+        if col_serverinfo.find_one() is None:
             col_serverinfo.insert_one(serverinfo)
-            await ctx.send(f'{ctx.guild.id}', delete_after=5)
-        await ctx.send(f"hi <@{ctx.author.id}>!!!, this server is ready to use mailmod", delete_after=5)
+            await ctx.send(f"hi <@{ctx.author.id}>!!!, this server is ready to use mailmod", delete_after=5)
+        else:
+            await ctx.send(f'Server has been setup, contact the bot developer if you want to set it up', delete_after=5)
 
 
 def setup(client):
