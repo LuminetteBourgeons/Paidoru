@@ -34,6 +34,10 @@ class Mod(commands.Cog):
             "guild_owner": guild.owner.id,
             "greeting": False,
             "greeting_message": "Hai selamat datang di channel ini!",
+            "reply": {
+                "lock": False,
+                "target": 0
+            }
         }
         print(serverinfo)
         if col_serverinfo.find_one({'guild': guild.id}) is None:
@@ -52,9 +56,11 @@ class Mod(commands.Cog):
             "guild_owner": ctx.guild.owner.id,
             "greeting": False,
             "greeting_message": "Hai selamat datang di channel ini!",
+            "reply": {
+                "lock": False,
+                "target": 0
+            }
         }
-        # print(f'{ctx.guild.id}')
-        # print(list(col_serverinfo.find()))
         if col_serverinfo.find_one() is None:
             col_serverinfo.insert_one(serverinfo)
             await ctx.send(f"hi <@{ctx.author.id}>!!!, this server is ready to use mailmod", delete_after=5)
