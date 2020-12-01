@@ -5,7 +5,6 @@ import pymongo
 import json
 import asyncio
 
-from pymongo.collection import Collection
 
 with open('cogs/dbCred.json') as json_file:
     db_cred = json.load(json_file)
@@ -35,6 +34,10 @@ class Mod(commands.Cog):
             "guild_owner": guild.owner.id,
             "greeting": False,
             "greeting_message": "Hai selamat datang di channel ini!",
+            "reply": {
+                "lock": False,
+                "target": 0
+            }
         }
         print(serverinfo)
         if col_serverinfo.find_one({'guild': guild.id}) is None:
@@ -53,9 +56,11 @@ class Mod(commands.Cog):
             "guild_owner": ctx.guild.owner.id,
             "greeting": False,
             "greeting_message": "Hai selamat datang di channel ini!",
+            "reply": {
+                "lock": False,
+                "target": 0
+            }
         }
-        # print(f'{ctx.guild.id}')
-        # print(list(col_serverinfo.find()))
         if col_serverinfo.find_one() is None:
             col_serverinfo.insert_one(serverinfo)
             await ctx.send(f"hi <@{ctx.author.id}>!!!, this server is ready to use mailmod", delete_after=5)
@@ -63,18 +68,14 @@ class Mod(commands.Cog):
             await ctx.send(f'Server has been setup, contact the bot developer if you want to set it up', delete_after=5)
 
     def bot_status(self, status):
-        if status == 'idle':
-            return discord.Status.idle
-        elif status == 'online':
-            return discord.Status.online
-        elif status == 'offline':
-            return discord.Status.offline
-        elif status == 'dnd':
-            return discord.Status.dnd
-        elif status == 'invisible':
-            return discord.Status.invisible
-        else:
-            return False
+        switcher = {
+            'idle': discord.Status.idle,
+            'online': discord.Status.online,
+            'offline': discord.Status.offline,
+            'dnd': discord.Status.dnd,
+            'invisible': discord.Status.invisible
+        }
+        return switcher.get(status, False)
 
     @commands.command(name='setbot')
     @commands.is_owner()
@@ -83,7 +84,7 @@ class Mod(commands.Cog):
 
         if new_status is not False:
             await self.client.change_presence(status=new_status)
-            await ctx.send(f'status bot has been changed as {status}')
+            await ctx.send(f'Bot status has been changed to `{status}`')
         else:
             await ctx.send('Wrong command lets try `m. setbot <status>` \n'
                            'list of status : `online`, `offline`, `idle`, `dnd`, `invisible`')
@@ -114,7 +115,7 @@ class Mod(commands.Cog):
                     name=' '.join(name)
                 )
             )
-            await ctx.send(f"New Activity {activity} : {' '.join(name)}")
+            await ctx.send(f"New Activity {activity} {' '.join(name)}")
         else:
             await ctx.send('Wrong command lets try `m. activity <type> <name>` \n'
                            'list of type : '

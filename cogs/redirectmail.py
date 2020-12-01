@@ -4,7 +4,7 @@ from datetime import datetime
 import pymongo
 import json
 import asyncio
-import math
+import datetime
 
 with open('cogs/dbCred.json') as json_file:
     db_cred = json.load(json_file)
@@ -33,14 +33,28 @@ class RedirectMail(commands.Cog):
             else:
                 guild_owner_id = col_serverinfo.find_one()['guild_owner']
                 guild_id = col_serverinfo.find_one()['guild']
-                print(guild_owner_id)
-
             if message.author == self.client.user:
                 return
             guild_owner = self.client.get_user(guild_owner_id)
-
-            # print(f'author : {message.author}')
-            # print(f'message: {message.content}')
+            if message.author == guild_owner:
+                if message.content.startswith('m.'):
+                    return
+                print('gw owner')
+                q = col_serverinfo.find_one({'guild': guild_id})
+                if q['reply']['lock']:
+                    user = self.client.get_user(q['reply']['target'])
+                    embed = discord.Embed(
+                        title='Received message',
+                        description=message.content,
+                        colour=discord.Colour.blue(),
+                        timestamp=datetime.datetime.now()
+                    )
+                    embed.set_footer(
+                        text=f'{guild_owner.name}',
+                        icon_url=guild_owner.avatar_url
+                    )
+                    await user.send(embed=embed)
+                return
 
             confirm_emoji = ['\N{WHITE HEAVY CHECK MARK}',
                              '\N{NEGATIVE SQUARED CROSS MARK}',
@@ -74,7 +88,9 @@ class RedirectMail(commands.Cog):
                     self.client.wait_for('reaction_add', check=check, timeout=30)
                 ], return_when=asyncio.FIRST_COMPLETED)
                 # print('check done')
-                embed_after_reac = discord.Embed(title='Done')
+                embed_after_react = discord.Embed(
+                    title='Done',
+                    timestamp=datetime.datetime.now())
                 try:
                     # print('try done')
                     reaction, user = done.pop().result()
@@ -84,26 +100,28 @@ class RedirectMail(commands.Cog):
                         send_embed = discord.Embed(
                             title='Message Received',
                             description=message.content,
-                            colour=discord.Colour.green()
+                            colour=discord.Colour.green(),
+                            timestamp=datetime.datetime.now()
                         )
                         send_embed.set_footer(
-                            text=f'{message.author} | m. reply {message.author.id} ',
+                            text=f'{message.author} | m. lock {message.author.id} ',
                             icon_url=message.author.avatar_url
+
                         )
-                        embed_after_reac.title = 'Message Sent'
-                        embed_after_reac.description = message.content
-                        embed_after_reac.colour = discord.Colour.green()
-                        embed_after_reac.set_footer(
+                        embed_after_react.title = 'Message Sent'
+                        embed_after_react.description = message.content
+                        embed_after_react.colour = discord.Colour.green()
+                        embed_after_react.set_footer(
                             icon_url=guild_owner.avatar_url,
-                            text=f'{guild_owner.name} | {guild_id}'
+                            text=f'{guild_owner.name}'
                         )
 
                         await guild_owner.send(embed=send_embed)
                     else:
-                        embed_after_reac.title = 'Canceled'
-                        embed_after_reac.colour = discord.Colour.red()
+                        embed_after_react.title = 'Canceled'
+                        embed_after_react.colour = discord.Colour.red()
 
-                    await confirm_message.edit(embed=embed_after_reac)
+                    await confirm_message.edit(embed=embed_after_react)
                     loop = False
                     await confirm_message.remove_reaction(confirm_emoji[0], self.client.user)
                     await confirm_message.remove_reaction(confirm_emoji[1], self.client.user)
@@ -125,6 +143,61 @@ class RedirectMail(commands.Cog):
                 for future in pending:
                     future.cancel()  # we don't need these anymore
             return
+
+    @commands.command(name='lock')
+    @commands.is_owner()
+    async def cmd_lock_DM(self, ctx, user_id: int = None):
+        if ctx.message.guild:
+            return
+        guild_id = col_serverinfo.find_one()['guild']
+        user = self.client.get_user(id=user_id)
+        if user is None:
+            await ctx.send('wrong id')
+        else:
+            col_serverinfo.update_one(
+                {
+                    'guild': guild_id},
+                {
+                    '$set':
+                    {
+                        'reply.lock': True,
+                        'reply.target': user_id
+                    }
+                }
+            )
+            embed = discord.Embed(
+                title='-',
+                description=f'use `m. unlock` to unlock user target',
+                timestamp=datetime.datetime.now(),
+                color=discord.Colour.orange()
+            )
+            embed.set_author(
+                icon_url=user.avatar_url,
+                name=user.name
+            )
+            embed.set_footer(
+                text=f'{user.name} | {user.id}'
+            )
+            await ctx.send(embed=embed)
+
+    @commands.command(name='unlock')
+    @commands.is_owner()
+    async def cmd_unlock_DM(self, ctx):
+        if ctx.message.guild:
+            return
+        guild_id = col_serverinfo.find_one()['guild']
+        col_serverinfo.update_one(
+            {
+                'guild': guild_id},
+            {
+                '$set':
+                {
+                    'reply.lock': False,
+                    'reply.target': 0
+                }
+            }
+        )
+        await ctx.send('Unlock success')
 
 
 def setup(client):
