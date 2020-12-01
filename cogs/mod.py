@@ -104,7 +104,6 @@ class Mod(commands.Cog):
     @commands.is_owner()
     async def cmd_game(self, ctx, activity: str, *name):
         new_activity = self.switch_activity(activity)
-        name = ' '.join(name)
         if new_activity is not False:
             if len(name) == 0:
                 await ctx.send('<name> cant empty')
@@ -112,10 +111,10 @@ class Mod(commands.Cog):
             await self.client.change_presence(
                 activity=discord.Activity(
                     type=new_activity,
-                    name=name
+                    name=' '.join(name)
                 )
             )
-            await ctx.send(f'New Activity {activity} : {name}')
+            await ctx.send(f"New Activity {activity} : {' '.join(name)}")
         else:
             await ctx.send('Wrong command lets try `m. activity <type> <name>` \n'
                            'list of type : '
