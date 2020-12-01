@@ -126,3 +126,5 @@ dmypy.json
 .idea
 cred.json
 cogs/dbCred.json
+Procfile
+requirements.txt
