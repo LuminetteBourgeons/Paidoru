@@ -1,0 +1,27 @@
+[
+  {
+    "command": "run",
+    "description" :"Run automatic direct message function to new members\nrequires confirmation by reaction"
+  },
+  {
+    "command": "stop",
+    "description" : "Stop automatic direct message function to new members"
+  },
+  {
+    "command": "change message <content>",
+    "description" : "change the message that will be sent to new members\nrequires confirmation by reaction"
+  },
+  {
+    "command": "show message",
+    "description" : "displays messages to be sent to new members"
+  },
+  {
+    "command": "setbot <status>",
+    "description" : "change bot status. \nlist of status [online, offline, idle, dnd, invisible]"
+  },
+  {
+    "command": "activity <type> <name>",
+    "description" : "change bot activity. \nlist of <activity> [playing, completing, custom, listening, streaming, unknown, watching]"
+  }
+
+]

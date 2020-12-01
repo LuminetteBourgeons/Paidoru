@@ -84,7 +84,7 @@ class RedirectMail(commands.Cog):
                         send_embed = discord.Embed(
                             title='Message Received',
                             description=message.content,
-                            colour= discord.Colour.green()
+                            colour=discord.Colour.green()
                         )
                         send_embed.set_footer(
                             text=f'{message.author} | m. reply {message.author.id} ',

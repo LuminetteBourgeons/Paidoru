@@ -124,6 +124,5 @@ dmypy.json
 .pyre/
 
 .idea
-*.json
 cred.json
 cogs/dbCred.json

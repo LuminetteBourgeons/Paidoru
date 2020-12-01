@@ -35,8 +35,8 @@ class mailModGII(commands.Bot):
         print(self.user.name)
         print(self.user.id)
         print('------')
-        game = discord.Game("Nawaytes")
-        await self.client.change_presence(self, status=discord.Status.idle, activity=game)
+        game = discord.Game("Chat me")
+        await self.client.change_presence(self, status=discord.Status.online, activity=game)
 
     async def on_command_error(self, ctx, error):
         if isinstance(error, CommandNotFound):

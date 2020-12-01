@@ -17,7 +17,6 @@ col_greeting_msg = myDB['greeting_msg']
 class GreetingMessage(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.bot_owner = col_botinfo.find_one()['owner']
         self.emj = [
             '\N{WHITE HEAVY CHECK MARK}',
             '\N{NEGATIVE SQUARED CROSS MARK}'
@@ -44,8 +43,8 @@ class GreetingMessage(commands.Cog):
     async def run(self, ctx):
         if not ctx.message.guild:
             return
-        # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-        #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+            # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+            #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
             await ctx.send('the command has started', delete_after=3)
@@ -75,8 +74,8 @@ class GreetingMessage(commands.Cog):
     async def cmd_stop_greeting_message(self, ctx):
         if not ctx.message.guild:
             return
-        # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-        #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+            # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+            #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is False:
             await ctx.send('the command has stopped', delete_after=5)
@@ -91,23 +90,29 @@ class GreetingMessage(commands.Cog):
         if not ctx.message.guild:
             return
         if ctx.invoked_subcommand is None:
+            await ctx.send('Invalid command passed...')
+
+    @commands.group(name='show')
+    @commands.is_owner()
+    async def group_show(self, ctx):
+        if not ctx.message.guild:
+            return
+        if ctx.invoked_subcommand is None:
             await ctx.send('Invalid git command passed...')
 
     @group_change.command(name='message')
     @commands.is_owner()
     async def change_message(self, ctx):
-        if ctx.author == self.client.user:
-            return
         if not ctx.message.guild:
             return
-        # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-        #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
+            # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
+            #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         confirm_message = await ctx.send('are you sure you want to change the greeting message',
                                          delete_after=15)
         await confirm_message.add_reaction(self.emj[0])
         await confirm_message.add_reaction(self.emj[1])
-        cmd = 'm. change message '
+        cmd = 'm. change message'
         col_serverinfo.update_one({'guild': ctx.guild.id},
                                   {'$set': {'greeting_message': ctx.message.content.replace(cmd, '')}})
 
@@ -125,13 +130,15 @@ class GreetingMessage(commands.Cog):
         except asyncio.TimeoutError:
             await confirm_message.edit(content="You ran out of time!")
 
-
-        pass
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload):
-        if payload.user_id == self.client.user.id:
+    @group_show.command(name='message')
+    @commands.is_owner()
+    async def show_message(self, ctx):
+        if ctx.author == self.client.user:
             return
+        if not ctx.message.guild:
+            return
+        message_str = col_serverinfo.find_one()['greeting_message']
+        await ctx.send(message_str)
 
 
 def setup(client):
