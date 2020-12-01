@@ -33,11 +33,12 @@ class RedirectMail(commands.Cog):
             else:
                 guild_owner_id = col_serverinfo.find_one()['guild_owner']
                 guild_id = col_serverinfo.find_one()['guild']
-
             if message.author == self.client.user:
                 return
             guild_owner = self.client.get_user(guild_owner_id)
             if message.author == guild_owner:
+                if message.content.startswith('m.'):
+                    return
                 print('gw owner')
                 q = col_serverinfo.find_one({'guild': guild_id})
                 if q['reply']['lock']:
