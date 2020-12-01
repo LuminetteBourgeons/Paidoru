@@ -1,11 +1,11 @@
 [
   {
     "command": "run",
-    "description" :"Run automatic direct message function to new members\nrequires confirmation by reaction"
+    "description" :"Run automatic direct message to new members\nrequires confirmation by reaction"
   },
   {
     "command": "stop",
-    "description" : "Stop automatic direct message function to new members"
+    "description" : "Stop automatic direct message to new members"
   },
   {
     "command": "change message <content>",
@@ -21,7 +21,15 @@
   },
   {
     "command": "activity <type> <name>",
-    "description" : "change bot activity. \nlist of <activity> [playing, completing, custom, listening, streaming, unknown, watching]"
+    "description" : "change bot activity. \nlist of <type> [playing, completing, custom, listening, streaming, unknown, watching]"
+  },
+  {
+    "command": "lock <user id>",
+    "description": "lock user with <user id> for reply DM\n this command only can be use on DM channel by owner"
+  },
+  {
+    "command": "unlock",
+    "description": "unlock user on reply DM channel\n this command only can be use on DM channel by owner"
   }
 
 ]

@@ -43,9 +43,6 @@ class GreetingMessage(commands.Cog):
     async def run(self, ctx):
         if not ctx.message.guild:
             return
-            # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-            #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
-            return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
             await ctx.send('the command has started', delete_after=3)
             return
@@ -74,9 +71,6 @@ class GreetingMessage(commands.Cog):
     async def cmd_stop_greeting_message(self, ctx):
         if not ctx.message.guild:
             return
-            # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-            #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
-            return
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is False:
             await ctx.send('the command has stopped', delete_after=5)
             return
@@ -104,9 +98,6 @@ class GreetingMessage(commands.Cog):
     @commands.is_owner()
     async def change_message(self, ctx):
         if not ctx.message.guild:
-            return
-            # if ctx.author.id not in [self.bot_owner, ctx.guild.owner.id] or \
-            #         col_serverinfo.find_one({'guild': ctx.guild.id}) is None:
             return
         confirm_message = await ctx.send('are you sure you want to change the greeting message',
                                          delete_after=15)
