@@ -143,7 +143,7 @@ class Mod(commands.Cog):
         :return: none
         '''
         new_activity = self.switch_activity(activity)
-        if new_activity is True:
+        if new_activity is not False:
             if len(name) == 0:
                 await ctx.send('<name> cant empty')
                 return
