@@ -40,9 +40,13 @@ class GreetingMessage(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
+    @commands.guild_only()
     async def run(self, ctx):
-        if not ctx.message.guild:
-            return
+        '''
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        '''
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
             await ctx.send('the command has started', delete_after=3)
             return
@@ -68,9 +72,13 @@ class GreetingMessage(commands.Cog):
 
     @commands.command(name="stop")
     @commands.is_owner()
+    @commands.guild_only()
     async def cmd_stop_greeting_message(self, ctx):
-        if not ctx.message.guild:
-            return
+        '''
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        '''
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is False:
             await ctx.send('the command has stopped', delete_after=5)
             return
@@ -80,25 +88,36 @@ class GreetingMessage(commands.Cog):
 
     @commands.group(name='change')
     @commands.is_owner()
+    @commands.guild_only()
     async def group_change(self, ctx):
-        if not ctx.message.guild:
-            return
+        '''
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        '''
         if ctx.invoked_subcommand is None:
             await ctx.send('Invalid command passed...')
 
     @commands.group(name='show')
     @commands.is_owner()
+    @commands.guild_only()
     async def group_show(self, ctx):
-        if not ctx.message.guild:
-            return
+        '''
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        '''
         if ctx.invoked_subcommand is None:
             await ctx.send('Invalid git command passed...')
 
     @group_change.command(name='message')
     @commands.is_owner()
     async def change_message(self, ctx):
-        if not ctx.message.guild:
-            return
+        '''
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        '''
         confirm_message = await ctx.send('are you sure you want to change the greeting message',
                                          delete_after=15)
         await confirm_message.add_reaction(self.emj[0])
@@ -124,9 +143,12 @@ class GreetingMessage(commands.Cog):
     @group_show.command(name='message')
     @commands.is_owner()
     async def show_message(self, ctx):
+        '''
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        '''
         if ctx.author == self.client.user:
-            return
-        if not ctx.message.guild:
             return
         message_str = col_serverinfo.find_one()['greeting_message']
         await ctx.send(message_str)

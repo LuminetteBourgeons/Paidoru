@@ -30,6 +30,11 @@
   {
     "command": "unlock",
     "description": "unlock user on reply DM channel\n this command only can be use on DM channel by owner"
+  },
+  {
+    "command": "say <#channel> <message>",
+    "description": "send message to specific channel"
   }
+
 
 ]
