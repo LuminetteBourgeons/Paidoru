@@ -78,7 +78,7 @@ class Mod(commands.Cog):
         return switcher.get(status, False)
 
     @commands.command(name='setbot')
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     async def cmd_setbot(self, ctx, status: str):
         new_status = self.bot_status(status)
 
@@ -102,7 +102,7 @@ class Mod(commands.Cog):
         return switcher.get(argument, False)
 
     @commands.command(name='activity')
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     async def cmd_game(self, ctx, activity: str, *name):
         new_activity = self.switch_activity(activity)
         if new_activity is not False:
