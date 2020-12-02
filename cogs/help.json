@@ -43,14 +43,14 @@
   },
   {
     "type": "Guild Owner",
-    "name": "exit reply",
+    "name": "exit",
     "syntax": "exit",
     "description": "Exit from `reply` command\n\n this command only can be use on DM channel by owner"
   },
   {
     "type": "Administrator",
     "name": "say",
-    "syntax": "sat `{channel}` `{message}`",
+    "syntax": "say `{channel}` `{message}`",
     "description": "Send message to specific channel\n\nArgument :\n`{channel}` : channel mention\n`{message}` : Your message"
   }
 ]
