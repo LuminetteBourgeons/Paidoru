@@ -5,7 +5,6 @@ import pymongo
 import json
 import asyncio
 
-
 with open('cogs/dbCred.json') as json_file:
     db_cred = json.load(json_file)
 
@@ -166,25 +165,69 @@ class Mod(commands.Cog):
                            '`watching`')
 
     @commands.command(name='help')
-    async def cmd_help(self, ctx):
-        '''
+    async def cmd_help(self, ctx, command=None):
+        """
 
         :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
         :return:
-        '''
-        embed = discord.Embed(
-            title='list of command',
-            description='bot prefix \'m. \'(with <space>)',
-            colour=discord.Colour.orange()
-        )
-        for content in f_help:
-            embed.add_field(
-                name=content['command'],
-                value=content['description'],
-                inline=False
-            )
+        """
 
-        await ctx.send(embed=embed)
+        all_help = []
+        owner_help = []
+        admin_help = []
+        general_help = []
+        owner_list = ''
+        admin_list = ''
+        for helping in f_help:
+            all_help.append(helping['name'])
+            if helping['type'] == 'Guild Owner':
+                owner_help.append(helping['name'])
+                owner_list += f"> {helping['name']}\n"
+            elif helping['type'] == 'Administrator':
+                admin_help.append(helping['name'])
+                admin_list += f"> {helping['name']}\n"
+            elif helping['type'] == 'General':
+                general_help.append(helping['name'])
+        if command is None:
+            embed = discord.Embed(
+                title='list of command',
+                description='bot prefix `m. `'
+                            '\nType `m. help {command}`',
+                colour=discord.Colour.orange()
+            )
+            embed.add_field(
+                name='Owner',
+                value=owner_list,
+                inline=True
+            )
+            embed.add_field(
+                name='Administrator',
+                value=admin_list,
+                inline=True
+            )
+            embed.set_footer(
+                text='Owner can use all commands'
+            )
+            await ctx.send(embed=embed)
+        else:
+            for helping in f_help:
+                if helping['name'] == command:
+                    embed = discord.Embed(
+                        title=f"Detail of `{helping['name']}` command"
+                    )
+                    embed.add_field(
+                        name=f"Syntax",
+                        value=helping['syntax'],
+                        inline=False
+                    )
+                    embed.add_field(
+                        name=f"Description",
+                        value=helping['description'],
+                        inline=False
+                    )
+                    await ctx.send(embed=embed)
+                    return
+            await ctx.send('command not found')
 
     @commands.command(name='say')
     @commands.has_permissions(administrator=True)

@@ -1,40 +1,56 @@
 [
   {
-    "command": "run",
-    "description" :"Run automatic direct message to new members\nrequires confirmation by reaction"
+    "type": "Guild Owner",
+    "name": "run",
+    "syntax": "run",
+    "description": "Run automatic direct message to new members\n\n*Requires confirmation by reaction:* "
   },
   {
-    "command": "stop",
-    "description" : "Stop automatic direct message to new members"
+    "type": "Guild Owner",
+    "name": "stop",
+    "syntax": "stop",
+    "description": "Stop automatic direct message to new members"
   },
   {
-    "command": "change message <content>",
-    "description" : "change the message that will be sent to new members\nrequires confirmation by reaction"
+    "type": "Guild Owner",
+    "name": "change",
+    "syntax": "change message `{content}`",
+    "description": "Change the message\n\n*Requires confirmation by reaction:* \nArgument\n`{content}` : Your content message"
   },
   {
-    "command": "show message",
-    "description" : "displays messages to be sent to new members"
+    "type": "Guild Owner",
+    "name": "show",
+    "syntax": "show message",
+    "description": "Displays messages to be sent to new members"
   },
   {
-    "command": "setbot <status>",
-    "description" : "change bot status. \nlist of status [online, offline, idle, dnd, invisible]"
+    "type": "Administrator",
+    "name": "setbot",
+    "syntax": "setbot `{status}`",
+    "description": "change bot status, this will reset bot activity\n\nArgument\n`{status}` : `online`, `offline`, `idle`, `dnd`, `invisible`"
   },
   {
-    "command": "activity <type> <name>",
-    "description" : "change bot activity. \nlist of <type> [playing, completing, custom, listening, streaming, unknown, watching]"
+    "type": "Administrator",
+    "name": "activity",
+    "syntax": "activity `{type}` `{name}`",
+    "description": "change bot activity. \n\nArgument:\n`{type}` : `playing`, `listening`, `watching`, `unknown`\n`{name}` : Activity name"
   },
   {
-    "command": "lock <user id>",
-    "description": "lock user with <user id> for reply DM\n this command only can be use on DM channel by owner"
+    "type": "Guild Owner",
+    "name": "reply",
+    "syntax": "reply `{user id}`",
+    "description": "Send and hold user with {user id} for reply DM channel\n\n*This command only can be use on DM channel by owner*\nArgument :\n`{user id}` : Discord user id"
   },
   {
-    "command": "unlock",
-    "description": "unlock user on reply DM channel\n this command only can be use on DM channel by owner"
+    "type": "Guild Owner",
+    "name": "exit reply",
+    "syntax": "exit",
+    "description": "Exit from `reply` command\n\n this command only can be use on DM channel by owner"
   },
   {
-    "command": "say <#channel> <message>",
-    "description": "send message to specific channel"
+    "type": "Administrator",
+    "name": "say",
+    "syntax": "sat `{channel}` `{message}`",
+    "description": "Send message to specific channel\n\nArgument :\n`{channel}` : channel mention\n`{message}` : Your message"
   }
-
-
 ]

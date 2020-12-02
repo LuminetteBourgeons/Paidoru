@@ -68,7 +68,7 @@ class RedirectMail(commands.Cog):
                     embed.colour = discord.Colour.green()
                     await message.author.send(embed=embed)
                 else:
-                    await message.author.send('choose user first `m. lock`')
+                    await message.author.send('choose user first `m. reply {user id}`')
             else:
                 '''
                 bila bukan owner, bakal di direct ke owner
@@ -125,7 +125,7 @@ class RedirectMail(commands.Cog):
                                 timestamp=datetime.datetime.now()
                             )
                             send_embed.set_footer(
-                                text=f'{message.author} | m. lock {message.author.id} ',
+                                text=f'{message.author} | m. reply {message.author.id} ',
                                 icon_url=message.author.avatar_url
 
                             )
@@ -164,7 +164,7 @@ class RedirectMail(commands.Cog):
                     for future in pending:
                         future.cancel()  # we don't need these anymore
 
-    @commands.command(name='lock')
+    @commands.command(name='reply')
     @commands.is_owner()
     @commands.dm_only()
     async def cmd_lock_DM(self, ctx, user_id: int = None):
@@ -191,7 +191,7 @@ class RedirectMail(commands.Cog):
             )
             embed = discord.Embed(
                 title='-',
-                description=f'use `m. unlock` to unlock user target',
+                description=f'use `m. exit` to unlock user target',
                 timestamp=datetime.datetime.now(),
                 color=discord.Colour.orange()
             )
@@ -204,7 +204,7 @@ class RedirectMail(commands.Cog):
             )
             await ctx.send(embed=embed)
 
-    @commands.command(name='unlock')
+    @commands.command(name='exit')
     @commands.is_owner()
     @commands.dm_only()
     async def cmd_unlock_DM(self, ctx):
@@ -225,7 +225,7 @@ class RedirectMail(commands.Cog):
                 }
             }
         )
-        await ctx.send('Unlock success')
+        await ctx.send('Exit')
 
 
 def setup(client):
