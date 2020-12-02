@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands, timers
+from discord.ext import commands, timers, tasks
 from discord.ext.commands import CommandNotFound
 import asyncio
 import json
@@ -13,6 +13,7 @@ PREFIX = credentials['prefix']
 intents = discord.Intents.all()
 intents.members = True
 intents.reactions = True
+
 
 
 class mailModGII(commands.Bot):
@@ -39,8 +40,16 @@ class mailModGII(commands.Bot):
         await self.client.change_presence(self, status=discord.Status.online, activity=game)
 
     async def on_command_error(self, ctx, error):
+        '''
+        semua error di handling di sini
+        :param ctx:
+        :param error:
+        :return:
+        '''
         if isinstance(error, CommandNotFound):
             return
+        if isinstance(error, commands.ChannelNotFound):
+            await ctx.send(f'channel not found')
         raise error
 
     def run(self):
