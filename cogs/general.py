@@ -27,6 +27,11 @@ class General(commands.Cog):
         print("cog:Mod ready")
 
     def embed_weapon(self, weapon):
+        '''
+        Fungsi cuma buat konversi json weapon jadi embed
+        :param weapon:
+        :return:
+        '''
         stars = ''
         for i in range(weapon['rarity']):
             stars += '⭐'
