@@ -28,6 +28,7 @@ class mailModGII(commands.Bot):
         self.load_extension('cogs.redirectmail')
         self.load_extension('cogs.greeting')
         self.load_extension('cogs.mod')
+        self.load_extension('cogs.general')
 
     async def on_ready(self):
 
