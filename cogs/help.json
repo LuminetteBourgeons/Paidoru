@@ -52,5 +52,11 @@
     "name": "say",
     "syntax": "say `{channel}` `{message}`",
     "description": "Send message to specific channel\n\nArgument :\n`{channel}` : channel mention\n`{message}` : Your message"
+  },
+  {
+    "type": "General",
+    "name": "weapon",
+    "syntax": "weapon `{name}`",
+    "description": "Displays weapon details\n\nArgument :\n`{name}` : weapon names"
   }
 ]

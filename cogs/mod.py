@@ -171,23 +171,16 @@ class Mod(commands.Cog):
         :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
         :return:
         """
-
-        all_help = []
-        owner_help = []
-        admin_help = []
-        general_help = []
         owner_list = ''
         admin_list = ''
+        general_list = ''
         for helping in f_help:
-            all_help.append(helping['name'])
             if helping['type'] == 'Guild Owner':
-                owner_help.append(helping['name'])
-                owner_list += f"> {helping['name']}\n"
+                owner_list += f" {helping['name']}\n"
             elif helping['type'] == 'Administrator':
-                admin_help.append(helping['name'])
-                admin_list += f"> {helping['name']}\n"
+                admin_list += f" {helping['name']}\n"
             elif helping['type'] == 'General':
-                general_help.append(helping['name'])
+                general_list += f" {helping['name']}\n"
         if command is None:
             embed = discord.Embed(
                 title='list of command',
@@ -205,15 +198,23 @@ class Mod(commands.Cog):
                 value=admin_list,
                 inline=True
             )
+            embed.add_field(
+                name='General',
+                value=general_list,
+                inline=True
+            )
             embed.set_footer(
-                text='Owner can use all commands'
+                text='Owner can use all commands\n'
+                     'Administrators cannot use owner commands\n'
+                     'General cannot use the admin and owner commands'
             )
             await ctx.send(embed=embed)
         else:
             for helping in f_help:
                 if helping['name'] == command:
                     embed = discord.Embed(
-                        title=f"Detail of `{helping['name']}` command"
+                        title=f"Detail of `{helping['name']}` command",
+                        colour=discord.Colour.orange()
                     )
                     embed.add_field(
                         name=f"Syntax",
