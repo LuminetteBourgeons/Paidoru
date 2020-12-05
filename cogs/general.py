@@ -95,8 +95,8 @@ class General(commands.Cog):
 
     def embed_artifact(self, artifact):
         '''
-        Fungsi cuma buat konversi json weapon jadi embed
-        :param weapon:
+        Fungsi cuma buat konversi json artifact jadi embed
+        :param artifact:
         :return:
         '''
         stars = ''

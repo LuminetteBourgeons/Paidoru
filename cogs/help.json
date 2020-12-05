@@ -69,6 +69,6 @@
     "type": "General",
     "name": "artifact",
     "syntax": "a `{name}`",
-    "description": "Displays weapon details\n\nArgument \n`{name}` : artefact names, minimal 4 characters"
+    "description": "Displays artifact details\n\nArgument \n`{name}` : artefact names, minimal 4 characters"
   }
 ]
