@@ -32,8 +32,8 @@
   {
     "type": "Administrator",
     "name": "activity",
-    "syntax": "activity `{type}` `{name}`",
-    "description": "change bot activity. \n\nArgument:\n`{type}` : `playing`, `listening`, `watching`, `unknown`\n`{name}` : Activity name"
+    "syntax": "`{activity}`  `{name}`",
+    "description": "change bot activity. \n\nArgument\n`{activity}` : `playing`, `listening`, `watching`\n`{name}` : activity name"
   },
   {
     "type": "Guild Owner",
@@ -51,12 +51,24 @@
     "type": "Administrator",
     "name": "say",
     "syntax": "say `{channel}` `{message}`",
-    "description": "Send message to specific channel\n\nArgument :\n`{channel}` : channel mention\n`{message}` : Your message"
+    "description": "Send message to specific channel\n\nArgument \n`{channel}` : channel mention\n`{message}` : Your message"
   },
   {
     "type": "General",
     "name": "weapon",
-    "syntax": "weapon `{name}`",
-    "description": "Displays weapon details\n\nArgument :\n`{name}` : weapon names"
+    "syntax": "w `{name}`",
+    "description": "Displays weapon details\n\nArgument \n`{name}` : weapon names, minimal 4 characters"
+  },
+  {
+    "type": "General",
+    "name": "calc",
+    "syntax": "calc `{q}`",
+    "description": "Displays weapon details\n\nArgument \n`{q}` : example `1+1`"
+  },
+  {
+    "type": "General",
+    "name": "artifact",
+    "syntax": "a `{name}`",
+    "description": "Displays weapon details\n\nArgument \n`{name}` : artefact names, minimal 4 characters"
   }
 ]
