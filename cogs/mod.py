@@ -110,7 +110,7 @@ class Mod(commands.Cog):
             await self.client.change_presence(status=new_status)
             await ctx.send(f'Bot status has been changed to `{status}`')
         else:
-            await ctx.send('Wrong command lets try `m. setbot <status>` \n'
+            await ctx.send('Wrong command lets try `pai setbot <status>` \n'
                            'list of status : `online`, `offline`, `idle`, `dnd`, `invisible`')
 
     def switch_activity(self, argument):
@@ -154,7 +154,7 @@ class Mod(commands.Cog):
             )
             await ctx.send(f"New Activity {activity} {' '.join(name)}")
         else:
-            await ctx.send('Wrong command lets try `m. activity <type> <name>` \n'
+            await ctx.send('Wrong command lets try `pai activity <type> <name>` \n'
                            'list of type : '
                            '`playing`, '
                            '`completing`, '
@@ -164,8 +164,55 @@ class Mod(commands.Cog):
                            '`unknown`, '
                            '`watching`')
 
-    @commands.command(name='help')
-    async def cmd_help(self, ctx, command=None):
+    @commands.command(name='playing')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_playing(self, ctx, *name):
+        if len(name) == 0:
+            await ctx.send('<name> cant empty')
+            return
+        await self.client.change_presence(
+            activity=discord.Activity(
+                type=discord.ActivityType.playing,
+                name=' '.join(name)
+            )
+        )
+        await ctx.send(f"New activity playing {' '.join(name)}")
+
+    @commands.command(name='listening')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_listening(self, ctx, *name):
+        if len(name) == 0:
+            await ctx.send('<name> cant empty')
+            return
+        await self.client.change_presence(
+            activity=discord.Activity(
+                type=discord.ActivityType.listening,
+                name=' '.join(name)
+            )
+        )
+        await ctx.send(f"New activity listening {' '.join(name)}")
+
+    @commands.command(name='watching')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_watching(self, ctx, *name):
+        if len(name) == 0:
+            await ctx.send('<name> cant empty')
+            return
+        await self.client.change_presence(
+            activity=discord.Activity(
+                type=discord.ActivityType.watching,
+                name=' '.join(name)
+            )
+        )
+        await ctx.send(f"New activity watching {' '.join(name)}")
+
+    @commands.command(name='modhelp')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_modhelp(self, ctx, command=None):
         """
 
         :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
@@ -184,8 +231,8 @@ class Mod(commands.Cog):
         if command is None:
             embed = discord.Embed(
                 title='list of command',
-                description='bot prefix `m. `'
-                            '\nType `m. help {command}`',
+                description='bot prefix `pai `'
+                            '\nType `pai help {command}`',
                 colour=discord.Colour.orange()
             )
             embed.add_field(

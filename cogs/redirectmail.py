@@ -47,7 +47,7 @@ class RedirectMail(commands.Cog):
                 '''
                 ngecek guild owner bukan
                 '''
-                if message.content.startswith('m.'):
+                if message.content.startswith('pai'):
                     return
                 q = col_serverinfo.find_one({'guild': guild_id})
                 if q['reply']['lock']:
@@ -68,14 +68,14 @@ class RedirectMail(commands.Cog):
                     embed.colour = discord.Colour.green()
                     await message.author.send(embed=embed)
                 else:
-                    await message.author.send('choose user first `m. reply {user id}`')
+                    await message.author.send('choose user first `pai reply {user id}`')
             else:
                 '''
                 bila bukan owner, bakal di direct ke owner
                 confirm pakai reaction
                 
                 next buat command buat ngilangin konfirmasi
-                m. always confirm
+                pai always confirm
                 '''
                 confirm_emoji = ['\N{WHITE HEAVY CHECK MARK}',
                                  '\N{NEGATIVE SQUARED CROSS MARK}',
@@ -85,7 +85,7 @@ class RedirectMail(commands.Cog):
                 embed_confirm = discord.Embed(
                     title='Confirmation',
                     description=f'You\'re sending this message to {guild_owner.name}?\n'
-                                f'React with :white_check_mark: to confirm.\n'
+                                f'React with :white_check_mark: to confirpai\n'
                                 f'To cancel this request, react with :negative_squared_cross_mark:.',
                     colour=discord.Colour.orange()
                 )
@@ -125,7 +125,7 @@ class RedirectMail(commands.Cog):
                                 timestamp=datetime.datetime.now()
                             )
                             send_embed.set_footer(
-                                text=f'{message.author} | m. reply {message.author.id} ',
+                                text=f'{message.author} | pai reply {message.author.id} ',
                                 icon_url=message.author.avatar_url
 
                             )
@@ -183,15 +183,15 @@ class RedirectMail(commands.Cog):
                     'guild': guild_id},
                 {
                     '$set':
-                    {
-                        'reply.lock': True,
-                        'reply.target': user_id
-                    }
+                        {
+                            'reply.lock': True,
+                            'reply.target': user_id
+                        }
                 }
             )
             embed = discord.Embed(
                 title='-',
-                description=f'use `m. exit` to unlock user target',
+                description=f'use `pai exit` to unlock user target',
                 timestamp=datetime.datetime.now(),
                 color=discord.Colour.orange()
             )
@@ -219,10 +219,10 @@ class RedirectMail(commands.Cog):
                 'guild': guild_id},
             {
                 '$set':
-                {
-                    'reply.lock': False,
-                    'reply.target': 0
-                }
+                    {
+                        'reply.lock': False,
+                        'reply.target': 0
+                    }
             }
         )
         await ctx.send('Exit')

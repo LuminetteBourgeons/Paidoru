@@ -11,6 +11,12 @@ with open('cogs/dbCred.json') as json_file:
 with open('cogs/weapons.json') as json_file:
     f_weapons = json.load(json_file)
 
+with open('cogs/artifacts.json') as json_file:
+    f_artifacts = json.load(json_file)
+
+with open('cogs/help.json') as json_file:
+    f_help = json.load(json_file)
+
 myClient = pymongo.MongoClient(db_cred['client'])
 myDB = myClient[db_cred['db_name']]
 col_botinfo = myDB['botinfo']
@@ -35,7 +41,7 @@ class General(commands.Cog):
         stars = ''
         for i in range(weapon['rarity']):
             stars += '⭐'
-        embed = discord.Embed(title=weapon['name'], description=stars,color=0x0197b2)
+        embed = discord.Embed(title=weapon['name'], description=stars, color=0x0197b2)
         embed.set_author(name='Weapon details')
         embed.set_thumbnail(url=weapon['img'])
         embed.add_field(name='Type', value=weapon['type'], inline=True)
@@ -45,8 +51,8 @@ class General(commands.Cog):
         embed.add_field(name='Location', value=weapon['location'], inline=False)
         return embed
 
-    @commands.command(name='weapon')
-    async def cmd_weapon(self,ctx, *keyword):
+    @commands.command(name='w')
+    async def cmd_weapon(self, ctx, *keyword):
         '''
 
         :param ctx:https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
@@ -84,8 +90,127 @@ class General(commands.Cog):
             embed = discord.Embed(color=0xecf005)
             embed.set_author(name=f"{count} weapons found\n"
                                   f"Please choose one")
-            embed.add_field(name="Syntax : `m. weapon {name}`", value=weapon_list, inline=False)
+            embed.add_field(name="Syntax : `pai weapon {name}`", value=weapon_list, inline=False)
             await ctx.send(embed=embed)
+
+    def embed_artifact(self, artifact):
+        '''
+        Fungsi cuma buat konversi json weapon jadi embed
+        :param weapon:
+        :return:
+        '''
+        stars = ''
+        embed = discord.Embed(title=artifact['set'], description=stars, color=0x0197b2)
+        embed.set_author(name='Artifact details')
+        embed.set_thumbnail(url=artifact['img'])
+        embed.add_field(name='Max Rarity', value=artifact['max-rarity'], inline=False)
+        embed.add_field(name='2-Piece Bonus', value=artifact['2-set bonus'], inline=False)
+        embed.add_field(name='4-Piece Bonus', value=artifact['4-set bonus'], inline=False)
+        return embed
+
+    @commands.command(name='a')
+    async def cmd_artifact(self, ctx, *keyword):
+        '''
+
+        :param ctx:https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :param keyword: nama senjata
+        :return:
+        '''
+        keyword = ' '.join(keyword).lower()
+        count = 0
+        find_list = []
+        find_one = None
+        for artifact in f_artifacts:
+            name = artifact['set'].lower()
+            if keyword.lower() == artifact['set'].lower():
+                embed = self.embed_artifact(artifact)
+                await ctx.send(embed=embed)
+                return
+            elif len(keyword) >= 4:
+                if name.find(keyword) >= 0:
+                    find_one = artifact
+                    find_list.append(artifact)
+                    count += 1
+        if count == 0:
+            embed = discord.Embed(
+                description="Artifact not found",
+                colour=discord.Colour.red()
+            )
+            await ctx.send(embed=embed)
+        elif count == 1:
+            embed = self.embed_artifact(find_one)
+            await ctx.send(embed=embed)
+        else:
+            artifact_list = ''
+            for artifact in find_list:
+                artifact_list += f"{artifact['set']}\n"
+            embed = discord.Embed(color=0xecf005)
+            embed.set_author(name=f"{count} artifact found\n"
+                                  f"Please choose one")
+            embed.add_field(name="Syntax : `pai artifact {name}`", value=artifact_list, inline=False)
+            await ctx.send(embed=embed)
+
+    @commands.command(name='calc')
+    async def cmd_hitung(self, ctx, *args):
+        soal = ' '.join(args)
+        print(soal)
+        try:
+            result = "{:,}".format(eval(soal))
+            await ctx.send(result)
+        except NameError:
+            await ctx.send(f'{self.client.user.name} belum ngerti :A_tachi:')
+
+    @commands.command(name='help')
+    @commands.guild_only()
+    async def cmd_help(self, ctx, command=None):
+        """
+
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        """
+        owner_list = ''
+        admin_list = ''
+        general_list = ''
+        for helping in f_help:
+            if helping['type'] == 'Guild Owner':
+                owner_list += f" {helping['name']}\n"
+            elif helping['type'] == 'Administrator':
+                admin_list += f" {helping['name']}\n"
+            elif helping['type'] == 'General':
+                general_list += f" {helping['name']}\n"
+        if command is None:
+            embed = discord.Embed(
+                title='list of command',
+                description='bot prefix `pai `'
+                            '\nType `pai help {command}`',
+                colour=discord.Colour.orange()
+            )
+            embed.add_field(
+                name='General',
+                value=general_list,
+                inline=True
+            )
+            await ctx.send(embed=embed)
+        else:
+            for helping in f_help:
+                if helping['name'] == command:
+                    embed = discord.Embed(
+                        title=f"Detail of `{helping['name']}` command",
+                        colour=discord.Colour.orange()
+                    )
+                    embed.add_field(
+                        name=f"Syntax",
+                        value=helping['syntax'],
+                        inline=False
+                    )
+                    embed.add_field(
+                        name=f"Description",
+                        value=helping['description'],
+                        inline=False
+                    )
+                    await ctx.send(embed=embed)
+                    return
+            await ctx.send('command not found')
 
 
 def setup(client):

@@ -122,7 +122,7 @@ class GreetingMessage(commands.Cog):
                                          delete_after=15)
         await confirm_message.add_reaction(self.emj[0])
         await confirm_message.add_reaction(self.emj[1])
-        cmd = 'm. change message'
+        cmd = 'pai change message'
         col_serverinfo.update_one({'guild': ctx.guild.id},
                                   {'$set': {'greeting_message': ctx.message.content.replace(cmd, '')}})
 

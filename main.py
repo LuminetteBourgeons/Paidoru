@@ -15,7 +15,6 @@ intents.members = True
 intents.reactions = True
 
 
-
 class mailModGII(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=PREFIX,
