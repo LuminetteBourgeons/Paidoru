@@ -63,7 +63,7 @@
     "type": "General",
     "name": "calc",
     "syntax": "calc `{q}`",
-    "description": "Displays weapon details\n\nArgument \n`{q}` : example `1+1`"
+    "description": "Answer math questions \n\nArgument \n`{q}` : example `1+1`"
   },
   {
     "type": "General",

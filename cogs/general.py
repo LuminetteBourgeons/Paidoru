@@ -133,7 +133,7 @@ class General(commands.Cog):
                     count += 1
         if count == 0:
             embed = discord.Embed(
-                description="Weapon not found",
+                description="Artifact not found",
                 colour=discord.Colour.red()
             )
             await ctx.send(embed=embed)
@@ -145,7 +145,7 @@ class General(commands.Cog):
             for artifact in find_list:
                 artifact_list += f"{artifact['set']}\n"
             embed = discord.Embed(color=0xecf005)
-            embed.set_author(name=f"{count} weapons found\n"
+            embed.set_author(name=f"{count} artifact found\n"
                                   f"Please choose one")
             embed.add_field(name="Syntax : `pai artifact {name}`", value=artifact_list, inline=False)
             await ctx.send(embed=embed)
@@ -189,11 +189,6 @@ class General(commands.Cog):
                 name='General',
                 value=general_list,
                 inline=True
-            )
-            embed.set_footer(
-                text='Owner can use all commands\n'
-                     'Administrators cannot use owner commands\n'
-                     'General cannot use the admin and owner commands'
             )
             await ctx.send(embed=embed)
         else:
