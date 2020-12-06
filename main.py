@@ -48,6 +48,10 @@ class mailModGII(commands.Bot):
         '''
         if isinstance(error, CommandNotFound):
             return
+
+        if isinstance(error, commands.CheckFailure):
+            return
+
         if isinstance(error, commands.ChannelNotFound):
             await ctx.send(f'channel not found')
         raise error

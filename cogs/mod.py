@@ -16,6 +16,7 @@ myDB = myClient[db_cred['db_name']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
+col_disable = myDB['disable']
 
 
 class Mod(commands.Cog):
@@ -167,47 +168,47 @@ class Mod(commands.Cog):
     @commands.command(name='playing')
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
-    async def cmd_playing(self, ctx, *name):
+    async def cmd_playing(self, ctx, *, name):
         if len(name) == 0:
             await ctx.send('<name> cant empty')
             return
         await self.client.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.playing,
-                name=' '.join(name)
+                name=name
             )
         )
-        await ctx.send(f"New activity playing {' '.join(name)}")
+        await ctx.send(f"New activity playing {name}")
 
     @commands.command(name='listening')
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
-    async def cmd_listening(self, ctx, *name):
+    async def cmd_listening(self, ctx, *, name):
         if len(name) == 0:
             await ctx.send('<name> cant empty')
             return
         await self.client.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.listening,
-                name=' '.join(name)
+                name=name
             )
         )
-        await ctx.send(f"New activity listening {' '.join(name)}")
+        await ctx.send(f"New activity listening {name}")
 
     @commands.command(name='watching')
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
-    async def cmd_watching(self, ctx, *name):
+    async def cmd_watching(self, ctx, *, name):
         if len(name) == 0:
             await ctx.send('<name> cant empty')
             return
         await self.client.change_presence(
             activity=discord.Activity(
                 type=discord.ActivityType.watching,
-                name=' '.join(name)
+                name=name
             )
         )
-        await ctx.send(f"New activity watching {' '.join(name)}")
+        await ctx.send(f"New activity watching {name}")
 
     @commands.command(name='modhelp')
     @commands.has_permissions(administrator=True)
@@ -287,6 +288,106 @@ class Mod(commands.Cog):
         '''
         await channel.send(' '.join(msg))
 
+    @commands.command(name='disable')
+    @commands.has_permissions(administrator=True)
+    async def cmd_disable(self, ctx, command):
+        msg = ctx.message
+        found = False
+        for help in f_help:
+            if command == help['name']:
+                found = True
+
+        if found:
+            check_command = col_disable.find_one(
+                {
+                    "command": command
+                }
+            )
+
+            if check_command is None:
+                col_disable.insert_one(
+                    {
+                        "command":command,
+                        "channel": [ctx.channel.id]
+                    }
+                )
+            is_disabled = col_disable.find_one(
+                {
+                    "command": command,
+                    "channel": ctx.channel.id
+                }
+            )
+            print(is_disabled)
+            if is_disabled is None:
+                col_disable.update(
+                    {
+                        "command": command
+                    },
+                    {
+                        "$push": {
+                            "channel": ctx.channel.id
+                        }
+                    }
+                )
+                await ctx.send("Done !", delete_after=5)
+            else:
+                await ctx.send("This command already", delete_after=5)
+        else:
+            await ctx.send("command not found", delete_after=5)
+        await msg.delete()
+
+    @commands.command(name='enable')
+    @commands.has_permissions(administrator=True)
+    async def cmd_enable(self, ctx, command):
+        msg = ctx.message
+        found = False
+        for help in f_help:
+            if command == help['name']:
+                found = True
+
+        if found:
+            check_command = col_disable.find_one(
+                {
+                    "command": command
+                }
+            )
+
+            if check_command is None:
+                return
+            is_disabled = col_disable.find_one(
+                {
+                    "command": command,
+                    "channel": ctx.channel.id
+                }
+            )
+            print(f'exec enable {is_disabled is not None}')
+            if is_disabled is not None:
+                col_disable.update(
+                    {
+                        "command": command
+                    },
+                    {
+                        "$pull":{
+                            "channel": ctx.channel.id
+                        }
+                    }
+                )
+                await ctx.send("This command has enable on this channel", delete_after=5)
+
+        else:
+            await ctx.send("command not found", delete_after=5)
+        await msg.delete()
+
 
 def setup(client):
     client.add_cog(Mod(client))
+'''
+    {
+        "command" : "w",
+        "channel" : [
+            12313131414124,
+            12312312312333,
+            53456645344423
+        ]
+    }
+'''
