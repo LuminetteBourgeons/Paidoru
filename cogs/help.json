@@ -70,5 +70,20 @@
     "name": "artifact",
     "syntax": "a `{name}`",
     "description": "Displays artifact details\n\nArgument \n`{name}` : artefact names, minimal 4 characters"
+  },{
+    "type": "General",
+    "name": "help",
+    "syntax": "help `{name}`",
+    "description": "Displays help details\n\nArgument \n`{name}` : command"
+  },{
+    "type": "Administrator",
+    "name": "disable",
+    "syntax": "disable `{command}`",
+    "description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
+  },{
+    "type": "Administrator",
+    "name": "enable",
+    "syntax": "enable `{command}`",
+    "description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
   }
 ]

@@ -22,6 +22,7 @@ myDB = myClient[db_cred['db_name']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
+col_disable = myDB['disable']
 
 
 class General(commands.Cog):
@@ -31,6 +32,21 @@ class General(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print("cog:Mod ready")
+
+    def checker(self, command):
+        async def predicate(ctx):
+            print(ctx.channel.id)
+            print(command)
+            is_disabled = col_disable.find_one(
+                {
+                    "command": command,
+                    "channel": ctx.channel.id
+                }
+            )
+            print(is_disabled is None)
+            return is_disabled is None
+
+        return commands.check(predicate)
 
     def embed_weapon(self, weapon):
         '''
@@ -52,6 +68,7 @@ class General(commands.Cog):
         return embed
 
     @commands.command(name='w')
+    @checker(None, "weapon")
     async def cmd_weapon(self, ctx, *keyword):
         '''
 
@@ -109,6 +126,7 @@ class General(commands.Cog):
         return embed
 
     @commands.command(name='a')
+    @checker(None,"artifact")
     async def cmd_artifact(self, ctx, *keyword):
         '''
 
@@ -151,17 +169,12 @@ class General(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(name='calc')
-    async def cmd_hitung(self, ctx, *args):
-        soal = ' '.join(args)
-        print(soal)
-        try:
-            result = "{:,}".format(eval(soal))
-            await ctx.send(result)
-        except NameError:
-            await ctx.send(f'{self.client.user.name} belum ngerti :A_tachi:')
+    @checker(None,"calc")
+    async def cmd_calc(self, ctx, *, q):
+        await ctx.send(eval(q))
 
     @commands.command(name='help')
-    @commands.guild_only()
+    @checker(None, "help")
     async def cmd_help(self, ctx, command=None):
         """
 
