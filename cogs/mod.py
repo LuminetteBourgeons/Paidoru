@@ -293,8 +293,8 @@ class Mod(commands.Cog):
     async def cmd_disable(self, ctx, command):
         msg = ctx.message
         found = False
-        for help in f_help:
-            if command == help['name']:
+        for helping in f_help:
+            if helping['name'] == command and helping['type'] == 'General':
                 found = True
 
         if found:
@@ -341,8 +341,9 @@ class Mod(commands.Cog):
     async def cmd_enable(self, ctx, command):
         msg = ctx.message
         found = False
-        for help in f_help:
-            if command == help['name']:
+
+        for helping in f_help:
+            if helping['name'] == command and helping['type'] == 'General':
                 found = True
 
         if found:
@@ -381,13 +382,3 @@ class Mod(commands.Cog):
 
 def setup(client):
     client.add_cog(Mod(client))
-'''
-    {
-        "command" : "w",
-        "channel" : [
-            12313131414124,
-            12312312312333,
-            53456645344423
-        ]
-    }
-'''

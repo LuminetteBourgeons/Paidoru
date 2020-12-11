@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands, timers, tasks
 from discord.ext.commands import CommandNotFound
+from datetime import datetime
 import asyncio
 import json
 import pymongo
@@ -13,6 +14,13 @@ PREFIX = credentials['prefix']
 intents = discord.Intents.all()
 intents.members = True
 intents.reactions = True
+
+with open('cogs/dbCred.json') as json_file:
+    db_cred = json.load(json_file)
+
+myClient = pymongo.MongoClient(db_cred['client'])
+myDB = myClient[db_cred['db_name']]
+col_bot_log = myDB['bot_log']
 
 
 class mailModGII(commands.Bot):
@@ -37,6 +45,12 @@ class mailModGII(commands.Bot):
         print(self.user.id)
         print('------')
         game = discord.Game("Chat me")
+        col_bot_log.insert_one(
+            {
+                "name": "start up",
+                "timestamp": datetime.now()
+            }
+        )
         await self.client.change_presence(self, status=discord.Status.online, activity=game)
 
     async def on_command_error(self, ctx, error):

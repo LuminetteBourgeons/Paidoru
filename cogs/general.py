@@ -23,6 +23,8 @@ col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
+col_command_log = myDB['command_log']
+
 
 
 class General(commands.Cog):
@@ -48,6 +50,17 @@ class General(commands.Cog):
 
         return commands.check(predicate)
 
+    def command_log(self, user, command, level, content):
+        col_command_log.insert_one(
+            {
+                "user": user,
+                "command": command,
+                "content": content,
+                "level": level,
+                "timestamp": datetime.now()
+            }
+        )
+
     def embed_weapon(self, weapon):
         '''
         Fungsi cuma buat konversi json weapon jadi embed
@@ -56,15 +69,18 @@ class General(commands.Cog):
         '''
         stars = ''
         for i in range(weapon['rarity']):
-            stars += '⭐'
+            stars += ' ⭐'
         embed = discord.Embed(title=weapon['name'], description=stars, color=0x0197b2)
         embed.set_author(name='Weapon details')
         embed.set_thumbnail(url=weapon['img'])
         embed.add_field(name='Type', value=weapon['type'], inline=True)
+        embed.add_field(name='Rarity', value=weapon['rarity'], inline=True)
         embed.add_field(name='Secondary', value=weapon['secondary'], inline=True)
         embed.add_field(name='Passive', value=weapon['passive'], inline=True)
+        embed.add_field(name='Base ATK', value=weapon['atk'], inline=True)
+        embed.add_field(name='Location', value=weapon['location'], inline=True)
         embed.add_field(name='Bonus', value=weapon['bonus'], inline=False)
-        embed.add_field(name='Location', value=weapon['location'], inline=False)
+
         return embed
 
     @commands.command(name='w')
@@ -85,6 +101,7 @@ class General(commands.Cog):
             if keyword.lower() == weapon['name'].lower():
                 embed = self.embed_weapon(weapon)
                 await ctx.send(embed=embed)
+                self.command_log(ctx.author.id, 'weapon', 'general', weapon['name'])
                 return
             elif len(keyword) >= 4:
                 if name.find(keyword) >= 0:
@@ -109,6 +126,10 @@ class General(commands.Cog):
                                   f"Please choose one")
             embed.add_field(name="Syntax : `pai weapon {name}`", value=weapon_list, inline=False)
             await ctx.send(embed=embed)
+        if count != 0:
+            self.command_log(ctx.author.id, 'weapon', 'general', find_one['name'])
+        print('save db')
+
 
     def embed_artifact(self, artifact):
         '''
@@ -143,6 +164,7 @@ class General(commands.Cog):
             if keyword.lower() == artifact['set'].lower():
                 embed = self.embed_artifact(artifact)
                 await ctx.send(embed=embed)
+                self.command_log(ctx.author.id, 'weapon', 'general', artifact['set'])
                 return
             elif len(keyword) >= 4:
                 if name.find(keyword) >= 0:
@@ -167,11 +189,13 @@ class General(commands.Cog):
                                   f"Please choose one")
             embed.add_field(name="Syntax : `pai artifact {name}`", value=artifact_list, inline=False)
             await ctx.send(embed=embed)
+        if count != 0:
+            self.command_log(ctx.author.id, 'weapon', 'general', find_one['set'])
 
     @commands.command(name='calc')
     @checker(None,"calc")
     async def cmd_calc(self, ctx, *, q):
-        await ctx.send(eval(q))
+        await ctx.send("{:,}".format(eval(q)))
 
     @commands.command(name='help')
     @checker(None, "help")
