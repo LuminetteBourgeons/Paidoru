@@ -1,5 +1,3 @@
-from dis import disco
-
 import discord
 from discord.ext import commands
 from datetime import datetime
@@ -26,7 +24,6 @@ col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
 col_command_log = myDB['command_log']
-
 
 
 class General(commands.Cog):
@@ -253,7 +250,7 @@ class General(commands.Cog):
 
     @commands.command(name='avatar')
     @checker(None, "avatar")
-    async def cmd_help(self, ctx, user: discord.User = None):
+    async def cmd_avatar(self, ctx, user: discord.User = None):
         """
 
         :param user: https://discordpy.readthedocs.io/en/latest/api.html#user
