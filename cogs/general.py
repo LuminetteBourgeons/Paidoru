@@ -1,3 +1,5 @@
+from dis import disco
+
 import discord
 from discord.ext import commands
 from datetime import datetime
@@ -248,6 +250,37 @@ class General(commands.Cog):
                     await ctx.send(embed=embed)
                     return
             await ctx.send('command not found')
+
+    @commands.command(name='avatar')
+    @checker(None, "avatar")
+    async def cmd_help(self, ctx, user: discord.User = None):
+        """
+
+        :param user: https://discordpy.readthedocs.io/en/latest/api.html#user
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :return:
+        """
+        pass
+        if user is None:
+            user = ctx.author
+        embed = discord.Embed(
+            title=f'Direct link.',
+            url=f"{user.avatar_url}",
+            colour=discord.Colour.green()
+        )
+
+        embed.set_image(
+            url=user.avatar_url
+        )
+        embed.set_author(
+            icon_url=user.avatar_url,
+            name=f'{user.name}\'s profile picture.'
+        )
+
+        await ctx.send(embed=embed)
+        self.command_log(ctx.author.id, 'avatar', 'general', f'{user}')
+
+
 
 
 def setup(client):
