@@ -233,7 +233,7 @@ class Mod(commands.Cog):
             embed = discord.Embed(
                 title='list of command',
                 description='bot prefix `pai `'
-                            '\nType `pai help {command}`',
+                            '\nType `pai modhelp {command}`',
                 colour=discord.Colour.orange()
             )
             embed.add_field(

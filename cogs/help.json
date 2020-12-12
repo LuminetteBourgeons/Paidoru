@@ -85,5 +85,10 @@
     "name": "enable",
     "syntax": "enable `{command}`",
     "description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
+  },{
+    "type": "General",
+    "name": "avatar",
+    "syntax": "avatar `{mention}`",
+    "description": "show avatar's user by mention\n\nArgument \n`{mention}` : mention user or blank"
   }
 ]
