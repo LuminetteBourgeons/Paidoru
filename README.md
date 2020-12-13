@@ -1,10 +1,10 @@
 # ModMail-discord
 This bot is used specifically for unofficial Indonesian Genshin Discord servers
 
-<h4 align="center">Music, Moderation, Trivia, Stream Alerts and Fully Modular.</h4>
+<h4 align="center">Indonesian Community, Games, Music, Podcast, Giveaway</h4>
 
 <p align="center">
-  <a href="https://discord.gg/red">
+  <a href="https://discord.gg/EXycJbN">
     <img src="https://discordapp.com/api/guilds/713794698044637204/widget.png?style=shield" alt="Discord Server">
   </a>
   <a href="https://www.python.org/downloads/">
