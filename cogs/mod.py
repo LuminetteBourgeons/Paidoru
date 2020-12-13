@@ -17,6 +17,7 @@ col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
+col_tags = myDB['tags']
 
 
 class Mod(commands.Cog):
@@ -378,6 +379,66 @@ class Mod(commands.Cog):
         else:
             await ctx.send("command not found", delete_after=5)
         await msg.delete()
+
+    @commands.command(name='tagadd')
+    @commands.has_permissions(administrator=True)
+    async def cmd_tagadd(self, ctx):
+        await ctx.send('type a tag (10s timeout)')
+        print(ctx.message.channel)
+
+        def check(m):
+            return m.channel == ctx.message.channel and m.author == ctx.author
+
+        tag = ''
+        description = ''
+        try:
+            message = await self.client.wait_for('message', timeout=10, check=check)
+            tag = str(message.content)
+            print(message.content)
+        except asyncio.TimeoutError:
+            await ctx.send('timeout')
+
+        find_tag = col_tags.find_one({"tag":tag})
+        print(find_tag)
+        if find_tag is not None:
+            await ctx.send('the tag is already')
+            return
+
+        await ctx.send('type a description tag (60s timeout)')
+        try:
+            message = await self.client.wait_for('message', timeout=60, check=check)
+            description = str(message.content)
+        except asyncio.TimeoutError:
+            await ctx.send('timeout')
+
+        await ctx.send(f'the tag `{tag}` has been added\n'
+                       f'the description is:\n'
+                       f'--\n'
+                       f'{description}')
+
+        col_tags.insert_one(
+            {
+                "creator": ctx.author.id,
+                "tag": tag,
+                "description": description
+            }
+        )
+
+    @commands.command(name='tagremove')
+    @commands.has_permissions(administrator=True)
+    async def cmd_tagremove(self, ctx, *, tag):
+        find_tag = col_tags.find_one(
+            {
+                'tag': tag
+            }
+        )
+        if find_tag is not None:
+            col_tags.delete_one(
+                {
+                    "tag": tag
+                }
+            )
+            await ctx.send(f'tag {tag} has been removed!')
 
 
 def setup(client):
