@@ -90,5 +90,25 @@
     "name": "avatar",
     "syntax": "avatar `{mention}`",
     "description": "show avatar's user by mention\n\nArgument \n`{mention}` : mention user or blank"
+  },{
+    "type": "Administrator",
+    "name": "tagadd",
+    "syntax": "tagadd",
+    "description": "add a new tags with 2 step, \nenter the tag's name and the tag's description"
+  },{
+    "type": "Administrator",
+    "name": "tagremove",
+    "syntax": "tagremove `{name}`",
+    "description": "remove tag\n\nArgument \n`{name}` : name of tag, use `taglist` command for check all tags"
+  },{
+    "type": "General",
+    "name": "tag",
+    "syntax": "tag {name}",
+    "description": "show content of tag, \n\nArgument \n`{name}` : name of tag, use `taglist` command for check all tags"
+  },{
+    "type": "General",
+    "name": "taglist",
+    "syntax": "taglist",
+    "description": "show all tags"
   }
 ]

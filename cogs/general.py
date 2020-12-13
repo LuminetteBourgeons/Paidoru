@@ -24,6 +24,7 @@ col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
 col_command_log = myDB['command_log']
+col_tags = myDB['tags']
 
 
 class General(commands.Cog):
@@ -201,18 +202,14 @@ class General(commands.Cog):
     async def cmd_help(self, ctx, command=None):
         """
 
+        :param command:
         :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
         :return:
         """
-        owner_list = ''
-        admin_list = ''
+
         general_list = ''
         for helping in f_help:
-            if helping['type'] == 'Guild Owner':
-                owner_list += f" {helping['name']}\n"
-            elif helping['type'] == 'Administrator':
-                admin_list += f" {helping['name']}\n"
-            elif helping['type'] == 'General':
+            if helping['type'] == 'General':
                 general_list += f" {helping['name']}\n"
         if command is None:
             embed = discord.Embed(
@@ -229,7 +226,7 @@ class General(commands.Cog):
             await ctx.send(embed=embed)
         else:
             for helping in f_help:
-                if helping['name'] == command:
+                if helping['name'] == command and helping['type'] == 'General':
                     embed = discord.Embed(
                         title=f"Detail of `{helping['name']}` command",
                         colour=discord.Colour.orange()
@@ -277,7 +274,32 @@ class General(commands.Cog):
         await ctx.send(embed=embed)
         self.command_log(ctx.author.id, 'avatar', 'general', f'{user}')
 
+    @commands.command(name='tag')
+    @checker(None, "tag")
+    async def cmd_tag(self, ctx, *, tag):
+        '''
 
+        :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
+        :param tag: tag
+        :return:
+        '''
+        find_tag = col_tags.find_one(
+            {
+                'tag': tag
+            }
+        )
+        if find_tag is not None:
+            await ctx.send(find_tag['description'])
+
+    @commands.command(name='taglist')
+    @checker(None, "taglist")
+    async def cmd_taglist(self, ctx):
+        find_tag = list(col_tags.find({'tag': {'$exists': True}}))
+        tags_string = ''
+        for tag in find_tag:
+            tags_string += f" `{tag['tag']}`,"
+        tags_string = tags_string[0:len(tags_string) - 1]
+        await ctx.send(tags_string)
 
 
 def setup(client):
