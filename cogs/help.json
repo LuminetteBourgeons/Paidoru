@@ -1,114 +1,122 @@
 [
-  {
-    "type": "Guild Owner",
-    "name": "run",
-    "syntax": "run",
-    "description": "Run automatic direct message to new members\n\n*Requires confirmation by reaction:* "
-  },
-  {
-    "type": "Guild Owner",
-    "name": "stop",
-    "syntax": "stop",
-    "description": "Stop automatic direct message to new members"
-  },
-  {
-    "type": "Guild Owner",
-    "name": "change",
-    "syntax": "change message `{content}`",
-    "description": "Change the message\n\n*Requires confirmation by reaction:* \nArgument\n`{content}` : Your content message"
-  },
-  {
-    "type": "Guild Owner",
-    "name": "show",
-    "syntax": "show message",
-    "description": "Displays messages to be sent to new members"
-  },
-  {
-    "type": "Administrator",
-    "name": "setbot",
-    "syntax": "setbot `{status}`",
-    "description": "change bot status, this will reset bot activity\n\nArgument\n`{status}` : `online`, `offline`, `idle`, `dnd`, `invisible`"
-  },
-  {
-    "type": "Administrator",
-    "name": "activity",
-    "syntax": "`{activity}`  `{name}`",
-    "description": "change bot activity. \n\nArgument\n`{activity}` : `playing`, `listening`, `watching`\n`{name}` : activity name"
-  },
-  {
-    "type": "Guild Owner",
-    "name": "reply",
-    "syntax": "reply `{user id}`",
-    "description": "Send and hold user with {user id} for reply DM channel\n\n*This command only can be use on DM channel by owner*\nArgument :\n`{user id}` : Discord user id"
-  },
-  {
-    "type": "Guild Owner",
-    "name": "exit",
-    "syntax": "exit",
-    "description": "Exit from `reply` command\n\n this command only can be use on DM channel by owner"
-  },
-  {
-    "type": "Administrator",
-    "name": "say",
-    "syntax": "say `{channel}` `{message}`",
-    "description": "Send message to specific channel\n\nArgument \n`{channel}` : channel mention\n`{message}` : Your message"
-  },
-  {
-    "type": "General",
-    "name": "weapon",
-    "syntax": "w `{name}`",
-    "description": "Displays weapon details\n\nArgument \n`{name}` : weapon names, minimal 4 characters"
-  },
-  {
-    "type": "General",
-    "name": "calc",
-    "syntax": "calc `{q}`",
-    "description": "Answer math questions \n\nArgument \n`{q}` : example `1+1`"
-  },
-  {
-    "type": "General",
-    "name": "artifact",
-    "syntax": "a `{name}`",
-    "description": "Displays artifact details\n\nArgument \n`{name}` : artefact names, minimal 4 characters"
-  },{
-    "type": "General",
-    "name": "help",
-    "syntax": "help `{name}`",
-    "description": "Displays help details\n\nArgument \n`{name}` : command"
-  },{
-    "type": "Administrator",
-    "name": "disable",
-    "syntax": "disable `{command}`",
-    "description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
-  },{
-    "type": "Administrator",
-    "name": "enable",
-    "syntax": "enable `{command}`",
-    "description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
-  },{
-    "type": "General",
-    "name": "avatar",
-    "syntax": "avatar `{mention}`",
-    "description": "show avatar's user by mention\n\nArgument \n`{mention}` : mention user or blank"
-  },{
-    "type": "Administrator",
-    "name": "tagadd",
-    "syntax": "tagadd",
-    "description": "add a new tags with 2 step, \nenter the tag's name and the tag's description"
-  },{
-    "type": "Administrator",
-    "name": "tagremove",
-    "syntax": "tagremove `{name}`",
-    "description": "remove tag\n\nArgument \n`{name}` : name of tag, use `taglist` command for check all tags"
-  },{
-    "type": "General",
-    "name": "tag",
-    "syntax": "tag {name}",
-    "description": "show content of tag, \n\nArgument \n`{name}` : name of tag, use `taglist` command for check all tags"
-  },{
-    "type": "General",
-    "name": "taglist",
-    "syntax": "taglist",
-    "description": "show all tags"
-  }
+	{
+		"type": "Administrator",
+		"name": "setbot",
+		"syntax": "setbot `{status}`",
+		"description": "change bot status, this will reset bot activity\n\nArgument\n`{status}` : `online`, `offline`, `idle`, `dnd`, `invisible`"
+	},
+	{
+		"type": "Administrator",
+		"name": "activity",
+		"syntax": "`{activity}`  `{name}`",
+		"description": "change bot activity. \n\nArgument\n`{activity}` : `playing`, `listening`, `watching`\n`{name}` : activity name"
+	},
+	{
+		"type": "Administrator",
+		"name": "say",
+		"syntax": "say `{channel}` `{message}`",
+		"description": "Send message to specific channel\n\nArgument \n`{channel}` : channel mention\n`{message}` : Your message"
+	},
+	{
+		"type": "Administrator",
+		"name": "disable",
+		"syntax": "disable `{command}`",
+		"description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
+	},
+	{
+		"type": "Administrator",
+		"name": "enable",
+		"syntax": "enable `{command}`",
+		"description": "Disable command on the current channel\n\nArgument \n`{command}` : command"
+	},
+	{
+		"type": "Administrator",
+		"name": "tagadd",
+		"syntax": "tagadd",
+		"description": "add a new tags with 2 step, \nenter the tag's name and the tag's description"
+	},
+	{
+		"type": "Administrator",
+		"name": "tagremove",
+		"syntax": "tagremove `{name}`",
+		"description": "remove tag\n\nArgument \n`{name}` : name of tag, use `taglist` command for check all tags"
+	},
+    {
+		"type": "Guild Owner",
+		"name": "run",
+		"syntax": "run",
+		"description": "Run automatic direct message to new members\n\n*Requires confirmation by reaction:* "
+	},
+	{
+		"type": "Guild Owner",
+		"name": "stop",
+		"syntax": "stop",
+		"description": "Stop automatic direct message to new members"
+	},
+	{
+		"type": "Guild Owner",
+		"name": "change",
+		"syntax": "change message `{content}`",
+		"description": "Change the message\n\n*Requires confirmation by reaction:* \nArgument\n`{content}` : Your content message"
+	},
+	{
+		"type": "Guild Owner",
+		"name": "show",
+		"syntax": "show message",
+		"description": "Displays messages to be sent to new members"
+	},
+	{
+		"type": "Guild Owner",
+		"name": "reply",
+		"syntax": "reply `{user id}`",
+		"description": "Send and hold user with {user id} for reply DM channel\n\n*This command only can be use on DM channel by owner*\nArgument :\n`{user id}` : Discord user id"
+	},
+	{
+		"type": "Guild Owner",
+		"name": "exit",
+		"syntax": "exit",
+		"description": "Exit from `reply` command\n\n this command only can be use on DM channel by owner"
+	},
+	{
+		"type": "General",
+		"name": "artifact",
+		"syntax": "a `{name}`",
+		"description": "Displays artifact details\n\nArgument \n`{name}` : artefact names, minimal 4 characters"
+	},
+	{
+		"type": "General",
+		"name": "weapon",
+		"syntax": "w `{name}`",
+		"description": "Displays weapon details\n\nArgument \n`{name}` : weapon names, minimal 4 characters"
+	},
+	{
+		"type": "General",
+		"name": "avatar",
+		"syntax": "avatar `{mention}`",
+		"description": "show avatar's user by mention\n\nArgument \n`{mention}` : mention user or blank"
+	},
+	{
+		"type": "General",
+		"name": "calc",
+		"syntax": "calc `{q}`",
+		"description": "Answer math questions \n\nArgument \n`{q}` : example `1+1`"
+	},
+	{
+		"type": "General",
+		"name": "help",
+		"syntax": "help `{name}`",
+		"description": "Displays help details\n\nArgument \n`{name}` : command"
+	},
+	{
+		"type": "General",
+		"name": "tag",
+		"syntax": "tag {name}",
+		"description": "show content of tag, \n\nArgument \n`{name}` : name of tag, use `taglist` command for check all tags"
+	},
+	{
+		"type": "General",
+		"name": "taglist",
+		"syntax": "taglist",
+		"description": "show all tags"
+	}
 ]
