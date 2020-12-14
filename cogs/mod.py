@@ -382,8 +382,10 @@ class Mod(commands.Cog):
 
     @commands.command(name='tagadd')
     @commands.has_permissions(administrator=True)
-    async def cmd_tagadd(self, ctx):
-        await ctx.send('type a tag (10s timeout)')
+    async def cmd_tagadd(self, ctx, isembed: str ='nonEmbed'):
+        if isembed.lower() not in ['nonembed', 'embed']:
+            return
+        await ctx.send('type a tag (15s timeout), type `cancel` for abort')
         print(ctx.message.channel)
 
         def check(m):
@@ -392,33 +394,49 @@ class Mod(commands.Cog):
         tag = ''
         description = ''
         try:
-            message = await self.client.wait_for('message', timeout=10, check=check)
+            message = await self.client.wait_for('message', timeout=15, check=check)
+            if message.content.lower() == 'cancel':
+                await ctx.send('aborted')
+                return
             tag = str(message.content)
             print(message.content)
         except asyncio.TimeoutError:
             await ctx.send('timeout')
+            return
 
         find_tag = col_tags.find_one({"tag":tag})
         print(find_tag)
         if find_tag is not None:
             await ctx.send('the tag is already')
             return
-
-        await ctx.send('type a description tag (60s timeout)')
+        await ctx.send('type a description tag (60s timeout), type `cancel` for abort')
         try:
             message = await self.client.wait_for('message', timeout=60, check=check)
+            if message.content.lower() == 'cancel':
+                await ctx.send('aborted')
+                return
             description = str(message.content)
         except asyncio.TimeoutError:
             await ctx.send('timeout')
+            return
 
         await ctx.send(f'the tag `{tag}` has been added\n'
                        f'the description is:\n'
                        f'--\n'
-                       f'{description}')
+                       )
+        if isembed.lower() == 'embed':
+            embed = discord.Embed(
+                description=description,
+                color=discord.Colour.orange()
+            )
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(description)
 
         col_tags.insert_one(
             {
                 "creator": ctx.author.id,
+                "type": isembed,
                 "tag": tag,
                 "description": description
             }
