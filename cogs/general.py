@@ -130,7 +130,6 @@ class General(commands.Cog):
             self.command_log(ctx.author.id, 'weapon', 'general', find_one['name'])
         print('save db')
 
-
     def embed_artifact(self, artifact):
         '''
         Fungsi cuma buat konversi json artifact jadi embed
@@ -147,7 +146,7 @@ class General(commands.Cog):
         return embed
 
     @commands.command(name='a')
-    @checker(None,"artifact")
+    @checker(None, "artifact")
     async def cmd_artifact(self, ctx, *keyword):
         '''
 
@@ -193,7 +192,7 @@ class General(commands.Cog):
             self.command_log(ctx.author.id, 'weapon', 'general', find_one['set'])
 
     @commands.command(name='calc')
-    @checker(None,"calc")
+    @checker(None, "calc")
     async def cmd_calc(self, ctx, *, q):
         await ctx.send("{:,}".format(eval(q)))
 
@@ -289,7 +288,14 @@ class General(commands.Cog):
             }
         )
         if find_tag is not None:
-            await ctx.send(find_tag['description'])
+            if find_tag['type'].lower() == 'embed'.lower():
+                embed = discord.Embed(
+                    description=find_tag['description'],
+                    color=discord.Colour.orange()
+                )
+                await ctx.send(embed=embed)
+            else:
+                await ctx.send(find_tag['description'])
 
     @commands.command(name='taglist')
     @checker(None, "taglist")
