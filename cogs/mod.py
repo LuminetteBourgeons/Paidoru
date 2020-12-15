@@ -459,6 +459,14 @@ class Mod(commands.Cog):
             )
             await ctx.send(f'tag {tag} has been removed!')
 
+    @commands.command(name='emjinfo')
+    @commands.has_permissions(administrator=True)
+    async def cmd_emoji_info(self, ctx, emoji: discord.Emoji = None):
+        name = emoji.name
+        emoji_id = emoji.id
+
+        await ctx.send(f'`<:{name}:{emoji_id}>`')
+
 
 def setup(client):
     client.add_cog(Mod(client))
