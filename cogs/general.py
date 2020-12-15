@@ -163,7 +163,7 @@ class General(commands.Cog):
             if keyword.lower() == artifact['set'].lower():
                 embed = self.embed_artifact(artifact)
                 await ctx.send(embed=embed)
-                self.command_log(ctx.author.id, 'weapon', 'general', artifact['set'])
+                self.command_log(ctx.author.id, 'artifact', 'general', artifact['set'])
                 return
             elif len(keyword) >= 4:
                 if name.find(keyword) >= 0:
@@ -189,7 +189,7 @@ class General(commands.Cog):
             embed.add_field(name="Syntax : `pai artifact {name}`", value=artifact_list, inline=False)
             await ctx.send(embed=embed)
         if count != 0:
-            self.command_log(ctx.author.id, 'weapon', 'general', find_one['set'])
+            self.command_log(ctx.author.id, 'artifact', 'general', find_one['set'])
 
     @commands.command(name='calc')
     @checker(None, "calc")

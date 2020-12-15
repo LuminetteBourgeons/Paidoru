@@ -398,7 +398,7 @@ class Mod(commands.Cog):
             if message.content.lower() == 'cancel':
                 await ctx.send('aborted')
                 return
-            tag = str(message.content)
+            tag = message.content
             print(message.content)
         except asyncio.TimeoutError:
             await ctx.send('timeout')
@@ -415,7 +415,8 @@ class Mod(commands.Cog):
             if message.content.lower() == 'cancel':
                 await ctx.send('aborted')
                 return
-            description = str(message.content)
+            description = message.content
+            print(message.content)
         except asyncio.TimeoutError:
             await ctx.send('timeout')
             return
