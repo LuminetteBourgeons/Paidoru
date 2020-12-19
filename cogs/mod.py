@@ -592,11 +592,12 @@ class Mod(commands.Cog):
             server = ''
             for data in raw:
                 data = data.split(':')
-                if (data[0]).lower() == 'ign':
+                print(data)
+                if (data[0]).lower().strip() in ['ign','nick']:
                     nick = data[1]
-                elif (data[0]).lower() == 'uid':
+                elif (data[0]).lower().strip() == 'uid':
                     uid = data[1]
-                elif (data[0]).lower() == 'server':
+                elif (data[0]).lower().strip() == 'server':
                     server = data[1]
 
             if nick == '' or uid == '' or server == '':
