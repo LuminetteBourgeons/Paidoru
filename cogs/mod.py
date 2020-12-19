@@ -582,8 +582,8 @@ class Mod(commands.Cog):
 
     @commands.command(name='autoscan')
     @commands.has_permissions(administrator=True)
-    async def cmd_autoscan(self, ctx):
-        messages = await ctx.channel.history().flatten()
+    async def cmd_autoscan(self, ctx, limit: int = 100):
+        messages = await ctx.channel.history(limit=limit).flatten()
         for message in messages:
             # print(f'{message}\n')
             raw = message.content.split('\n')
