@@ -592,7 +592,7 @@ class Mod(commands.Cog):
             server = ''
             for data in raw:
                 data = data.split(':')
-                if (data[0]).lower() == 'nick':
+                if (data[0]).lower() == 'ign':
                     nick = data[1]
                 elif (data[0]).lower() == 'uid':
                     uid = data[1]
