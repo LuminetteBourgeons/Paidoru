@@ -18,6 +18,7 @@ col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
 col_tags = myDB['tags']
+col_member = myDB['members']
 
 
 class Mod(commands.Cog):
@@ -280,7 +281,6 @@ class Mod(commands.Cog):
             await ctx.send('command not found')
 
     @commands.command(name='say')
-    @commands.has_permissions(administrator=True)
     async def cmd_say(self, ctx, channel: discord.TextChannel, *msg):
         '''
 
@@ -308,7 +308,7 @@ class Mod(commands.Cog):
             if check_command is None:
                 col_disable.insert_one(
                     {
-                        "command":command,
+                        "command": command,
                         "channel": [ctx.channel.id]
                     }
                 )
@@ -369,7 +369,7 @@ class Mod(commands.Cog):
                         "command": command
                     },
                     {
-                        "$pull":{
+                        "$pull": {
                             "channel": ctx.channel.id
                         }
                     }
@@ -382,7 +382,7 @@ class Mod(commands.Cog):
 
     @commands.command(name='tagadd')
     @commands.has_permissions(administrator=True)
-    async def cmd_tagadd(self, ctx, isembed: str ='nonEmbed'):
+    async def cmd_tagadd(self, ctx, isembed: str = 'nonEmbed'):
         if isembed.lower() not in ['nonembed', 'embed']:
             return
         await ctx.send('type a tag (15s timeout), type `cancel` for abort')
@@ -404,12 +404,12 @@ class Mod(commands.Cog):
             await ctx.send('timeout')
             return
 
-        find_tag = col_tags.find_one({"tag":tag})
+        find_tag = col_tags.find_one({"tag": tag})
         print(find_tag)
         if find_tag is not None:
             await ctx.send('the tag is already')
             return
-        await ctx.send('type a description tag (60s timeout), type `cancel` for abort')
+        await ctx.send('type a tag\'s description (60s timeout), type `cancel` for abort')
         try:
             message = await self.client.wait_for('message', timeout=60, check=check)
             if message.content.lower() == 'cancel':
@@ -466,6 +466,88 @@ class Mod(commands.Cog):
         emoji_id = emoji.id
 
         await ctx.send(f'`<:{name}:{emoji_id}>`')
+
+    @commands.command(name='scanchannel')
+    @commands.has_permissions(administrator=True)
+    async def cmd_tagadd(self, ctx):
+        print(ctx.message.channel.id)
+        print(ctx.guild.id)
+        check1 = col_serverinfo.find_one(
+            {
+                "guild": ctx.guild.id,
+                "grab_data": ctx.message.channel.id
+            }
+        )
+        await ctx.message.delete();
+        if check1 is not None:
+            await ctx.send("This channel already scanned", delete_after=5)
+            return
+        col_serverinfo.update(
+            {
+                "guild": ctx.guild.id
+            },
+            {
+                "$push": {
+                    "grab_data": ctx.channel.id
+                }
+            }
+        )
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author == self.client.user:
+            return
+        check1 = col_serverinfo.find_one(
+            {
+                "guild": message.guild.id,
+                "grab_data": message.channel.id
+            }
+        )
+        if message.channel.id in check1['grab_data']:
+            channel = self.client.get_channel(message.channel.id)
+            raw = message.content.split('\n')
+            nick = ''
+            uid = ''
+            server = ''
+            for data in raw:
+                data = data.split(':')
+                if (data[0]).lower() == 'nick':
+                    nick = data[1]
+                elif (data[0]).lower() == 'uid':
+                    uid = data[1]
+                elif (data[0]).lower() == 'server':
+                    server = data[1]
+
+            if nick == '' or uid == '' or server == '':
+                await message.add_reaction('\U0000274c')
+                temp = await channel.send(f"<@{message.author.id}>, masukan data sesuai format")
+                await asyncio.sleep(5)
+                await message.delete()
+                await temp.delete()
+            else:
+                find_members = col_member.find_one(
+                    {
+                        "user": message.author.id,
+                        "uid": uid
+                    }
+                )
+                if find_members is None:
+                    col_member.insert_one(
+                        {
+                            "user": message.author.id,
+                            "uid": uid,
+                            "nick": nick,
+                            "server": server
+                        }
+                    )
+                    await message.add_reaction('\U00002705')
+                    await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format")
+                else:
+                    await message.add_reaction('\U0000274c')
+                    temp = await channel.send(f"<@{message.author.id}>, hanya bisa memasukan 1 uid Hubungi Admin untuk meng-update")
+                    await asyncio.sleep(10)
+                    await message.delete()
+                    await temp.delete()
 
 
 def setup(client):
