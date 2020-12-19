@@ -469,7 +469,7 @@ class Mod(commands.Cog):
 
     @commands.command(name='scanchannel')
     @commands.has_permissions(administrator=True)
-    async def cmd_tagadd(self, ctx):
+    async def cmd_scanchannel(self, ctx):
         print(ctx.message.channel.id)
         print(ctx.guild.id)
         check1 = col_serverinfo.find_one(
@@ -493,6 +493,31 @@ class Mod(commands.Cog):
             }
         )
 
+    @commands.command(name='stopscan')
+    @commands.has_permissions(administrator=True)
+    async def cmd_stopscan(self, ctx):
+        check1 = col_serverinfo.find_one(
+            {
+                "guild": ctx.guild.id,
+                "grab_data": ctx.message.channel.id
+            }
+        )
+        if check1 is None:
+            return
+        else:
+            pass
+            col_serverinfo.update(
+                {
+                    "guild": ctx.guild.id
+                },
+                {
+                    "$pull": {
+                        "grab_data": ctx.channel.id
+                    }
+                }
+            )
+            await ctx.send('done!', delete_after=5)
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.client.user:
@@ -503,8 +528,13 @@ class Mod(commands.Cog):
                 "grab_data": message.channel.id
             }
         )
+        if check1 is None:
+            return
+        # if 'stopscan' in message.content:
+        #     return
         if message.channel.id in check1['grab_data']:
             channel = self.client.get_channel(message.channel.id)
+
             raw = message.content.split('\n')
             nick = ''
             uid = ''
@@ -544,11 +574,55 @@ class Mod(commands.Cog):
                     await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format")
                 else:
                     await message.add_reaction('\U0000274c')
-                    temp = await channel.send(f"<@{message.author.id}>, hanya bisa memasukan 1 uid Hubungi Admin untuk meng-update")
+                    temp = await channel.send(f"<@{message.author.id}>,"
+                                              f" hanya bisa memasukan 1 uid Hubungi Admin untuk meng-update")
                     await asyncio.sleep(10)
                     await message.delete()
                     await temp.delete()
 
+    @commands.command(name='autoscan')
+    @commands.has_permissions(administrator=True)
+    async def cmd_autoscan(self, ctx):
+        messages = await ctx.channel.history().flatten()
+        for message in messages:
+            # print(f'{message}\n')
+            raw = message.content.split('\n')
+            nick = ''
+            uid = ''
+            server = ''
+            for data in raw:
+                data = data.split(':')
+                if (data[0]).lower() == 'nick':
+                    nick = data[1]
+                elif (data[0]).lower() == 'uid':
+                    uid = data[1]
+                elif (data[0]).lower() == 'server':
+                    server = data[1]
+
+            if nick == '' or uid == '' or server == '':
+                pass
+                # await message.add_reaction('\U0000274c')
+            else:
+                find_member = col_member.find_one(
+                    {
+                        "user": message.author.id,
+                        "uid": uid
+                    }
+                )
+                print(find_member)
+                if find_member is None:
+                    col_member.insert_one(
+                        {
+                            "user": message.author.id,
+                            "uid": uid,
+                            "nick": nick,
+                            "server": server
+                        }
+                    )
+                    await message.add_reaction('\U00002705')
+                else:
+                    pass
+                    # await message.add_reaction('\U0000274c')
 
 def setup(client):
     client.add_cog(Mod(client))
