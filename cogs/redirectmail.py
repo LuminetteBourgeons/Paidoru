@@ -87,7 +87,7 @@ class RedirectMail(commands.Cog):
                 embed_confirm = discord.Embed(
                     title='Confirmation',
                     description=f'You\'re sending this message to {guild_owner.name}?\n'
-                                f'React with :white_check_mark: to confirpai\n'
+                                f'React with :white_check_mark: to confirm.\n'
                                 f'To cancel this request, react with :negative_squared_cross_mark:.',
                     colour=discord.Colour.orange()
                 )
