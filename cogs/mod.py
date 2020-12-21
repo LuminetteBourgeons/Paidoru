@@ -626,5 +626,12 @@ class Mod(commands.Cog):
                     pass
                     # await message.add_reaction('\U0000274c')
 
+    @commands.command(name='eval')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_eval(self, ctx, *, content):
+        print(content)
+        await ctx.send(eval(content))
+
 def setup(client):
     client.add_cog(Mod(client))
