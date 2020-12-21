@@ -6,11 +6,13 @@ import json
 import asyncio
 import datetime
 import os
-with open('cogs/dbCred.json') as json_file:
-    db_cred = json.load(json_file)
+from boto.s3.connection import S3Connection
+s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
+
+
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
-myDB = myClient[db_cred['db_name']]
+myDB = myClient['modmail_gii']
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']

@@ -7,17 +7,15 @@ import json
 import pymongo
 import os
 
-with open("cred.json") as json_file:
-    credentials = json.load(json_file)
+from boto.s3.connection import S3Connection
+s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
+
 
 PREFIX = ['pai ', 'Pai ', ';', '; ']
 
 intents = discord.Intents.all()
 intents.members = True
 intents.reactions = True
-
-with open('cogs/dbCred.json') as json_file:
-    db_cred = json.load(json_file)
 
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
@@ -34,7 +32,6 @@ class mailModGII(commands.Bot):
         self.client = commands.Bot
 
         self.client.remove_command(self, name='help')
-        self.token = credentials['token']
         self.load_extension('cogs.redirectmail')
         self.load_extension('cogs.greeting')
         self.load_extension('cogs.mod')

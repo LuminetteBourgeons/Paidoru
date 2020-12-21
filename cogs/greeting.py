@@ -4,9 +4,10 @@ import pymongo
 import json
 import asyncio
 import os
+from boto.s3.connection import S3Connection
+s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
-with open('cogs/dbCred.json') as json_file:
-    db_cred = json.load(json_file)
+
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
 myDB = myClient['modmail_gii']
