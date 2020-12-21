@@ -4,7 +4,7 @@ from datetime import datetime
 import pymongo
 import json
 import asyncio
-
+import os
 with open('cogs/dbCred.json') as json_file:
     db_cred = json.load(json_file)
 
@@ -17,8 +17,8 @@ with open('cogs/artifacts.json') as json_file:
 with open('cogs/help.json') as json_file:
     f_help = json.load(json_file)
 
-myClient = pymongo.MongoClient(db_cred['client'])
-myDB = myClient[db_cred['db_name']]
+myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
+myDB = myClient['modmail_gii']
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']

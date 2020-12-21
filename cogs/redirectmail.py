@@ -5,11 +5,11 @@ import pymongo
 import json
 import asyncio
 import datetime
-
+import os
 with open('cogs/dbCred.json') as json_file:
     db_cred = json.load(json_file)
 
-myClient = pymongo.MongoClient(db_cred['client'])
+myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
 myDB = myClient[db_cred['db_name']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
