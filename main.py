@@ -44,7 +44,7 @@ class mailModGII(commands.Bot):
         print(self.user.name)
         print(self.user.id)
         print('------')
-        game = discord.Game("Modmail")
+        game = discord.Game("new prefix ;")
         col_bot_log.insert_one(
             {
                 "name": "start up",
