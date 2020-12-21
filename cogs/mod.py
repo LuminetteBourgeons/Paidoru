@@ -571,11 +571,11 @@ class Mod(commands.Cog):
                         }
                     )
                     await message.add_reaction('\U00002705')
-                    await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format")
+                    await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format", delete_after=5)
                 else:
                     await message.add_reaction('\U0000274c')
                     temp = await channel.send(f"<@{message.author.id}>,"
-                                              f" hanya bisa memasukan 1 uid Hubungi Admin untuk meng-update")
+                                              f" Anda sudah memasukan data ini, terimakasih :D")
                     await asyncio.sleep(10)
                     await message.delete()
                     await temp.delete()
