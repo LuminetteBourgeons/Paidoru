@@ -5,11 +5,12 @@ from datetime import datetime
 import asyncio
 import json
 import pymongo
+import os
 
 with open("cred.json") as json_file:
     credentials = json.load(json_file)
 
-PREFIX = credentials['prefix']
+PREFIX = ['pai ', 'Pai ', ';', '; ']
 
 intents = discord.Intents.all()
 intents.members = True
@@ -18,11 +19,13 @@ intents.reactions = True
 with open('cogs/dbCred.json') as json_file:
     db_cred = json.load(json_file)
 
-myClient = pymongo.MongoClient(db_cred['client'])
-myDB = myClient[db_cred['db_name']]
+
+myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
+myDB = myClient['modmail_gii']
 col_bot_log = myDB['bot_log']
 
 
+print(PREFIX)
 class mailModGII(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=PREFIX,
@@ -71,7 +74,7 @@ class mailModGII(commands.Bot):
         raise error
 
     def run(self):
-        super().run(self.token)
+        super().run(os.environ['DISCORD_BOT_TOKEN'])
 
 
 if __name__ == '__main__':
