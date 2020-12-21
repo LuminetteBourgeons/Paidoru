@@ -1086,5 +1086,71 @@
     "bonus": "Increases Base ATK by 20/25/30/35/40%. On hit, attacks against enemies with less than 30% HP increase all party members' Base ATK by 40/50/60/70/80% for 12s. Can only occur once every 30s.",
     "location": "Gacha",
     "img": "https://rerollcdn.com/GENSHIN/Weapon/NEW/Wolf's_Gravestone.png"
+  },
+  {
+    "name": "Wolf's Gravestone",
+    "type": "Claymore",
+    "rarity": 5,
+    "atk": 46,
+    "secondary": "ATK",
+    "passive": "Wolfish Tracker",
+    "bonus": "Increases Base ATK by 20/25/30/35/40%. On hit, attacks against enemies with less than 30% HP increase all party members' Base ATK by 40/50/60/70/80% for 12s. Can only occur once every 30s.",
+    "location": "Gacha",
+    "img": "https://rerollcdn.com/GENSHIN/Weapon/NEW/Wolf's_Gravestone.png"
+  },
+  {
+    "name": "Wolf's Gravestone",
+    "type": "Claymore",
+    "rarity": 5,
+    "atk": 46,
+    "secondary": "ATK",
+    "passive": "Wolfish Tracker",
+    "bonus": "Increases Base ATK by 20/25/30/35/40%. On hit, attacks against enemies with less than 30% HP increase all party members' Base ATK by 40/50/60/70/80% for 12s. Can only occur once every 30s.",
+    "location": "Gacha",
+    "img": "https://rerollcdn.com/GENSHIN/Weapon/NEW/Wolf's_Gravestone.png"
+  },
+  {
+    "name": "Summit Shaper",
+    "type": "Sword",
+    "rarity": 5,
+    "atk": 46,
+    "secondary": "ATK%",
+    "passive": "Golden Majesty",
+    "bonus": "Increases Shield Strength by 20%. Scoring hits on opponents increases ATK by 4% for 8s. Max 5 stacks. Can only occur once every 0.3s. While protected by a shield, this ATK increase effect is increased by 100%. \n",
+    "location": "Gacha",
+    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422954394910760/unknown.png"
+  },
+  {
+    "name": "Festering Desire",
+    "type": "Sword",
+    "rarity": 4,
+    "atk": 42,
+    "secondary": "Energy Recharge",
+    "passive": "Undying Admiration",
+    "bonus": "Incrases Elemental Skill DMG by 16% and Elemental Skill CRIT Rata be 6%.",
+    "location": "Craft",
+    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422868604223498/unknown.png"
+  },
+  {
+    "name": "Snow-Tombed Starsilver",
+    "type": "Claymore",
+    "rarity": 4,
+    "atk": 44,
+    "secondary": "Physical DMG Bonus",
+    "passive": "Frost Burial",
+    "bonus": "Hitting an opponent with Normal and Charged Attacks has a 60% chance of forming and dropping an Everfrost Icicle above them, dealing 80% AoE ATK DMG. Opponents affected by Cryo are dealt 200% ATK DMG. Can only occur once every 10s. ",
+    "location": "Craft",
+    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422673867014154/unknown.png"
+  },
+  {
+    "name": "Dragonspine Spear",
+    "type": "Polearm",
+    "rarity": 4,
+    "atk": 41,
+    "secondary": "Physical DMG Bonus",
+    "passive": "Frost Burial",
+    "bonus": "Hitting an opponent with Normal and Charged Attacks has a 60% chance of forming and dropping an Everfrost Icicle above them, dealing 80% AoE ATK DMG. Opponents affected by Cryo are dealt 200% ATK DMG. Can only occur once every 10s. ",
+    "location": "Craft",
+    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422591533613086/unknown.png"
   }
 ]

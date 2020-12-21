@@ -173,5 +173,23 @@
     "2-set bonus": "Elemental Mastery +80",
     "4-set bonus": "Increases Charged Attack DMG by 35% if the character uses a Catalyst or Bow.",
     "img": "https://rerollcdn.com/GENSHIN/Gear/wanderer's_troupe.png"
+  },{
+    "set": "Glacier and Snowfield",
+    "max-rarity": 5,
+    "2-set bonus": "Cryo DMG Bonus +15%",
+    "4-set bonus": "Increases Superconduct DMG by 100%. Increases Melt DMG by 15%. Using an Elemental Burst increases Cryo DMG Bonus by 30% for 10s.",
+    "img": "https://genshin.honeyhunterworld.com/img/art/glacier_and_snowfield_4.png"
+  },{
+    "set": "Heart of Depth",
+    "max-rarity": 5,
+    "2-set bonus": "Hydro DMG Bonus +15%",
+    "4-set bonus": "After using Elemental Skill, increases Normal Attack and Charged Attack DMG by 30% for 15s.",
+    "img": "https://genshin.honeyhunterworld.com/img/art/depth_of_heart_4.png"
+  },{
+    "set": "Blizzard Strayer",
+    "max-rarity": 5,
+    "2-set bonus": "Cryo DMG Bonus +15%",
+    "4-set bonus": "When a character attacks an opponent affected by Cryo, their CRIT Rate is increased by 20%. If the opponent is Frozen, CRIT Rate is increased by an additional 20%.",
+    "img": "https://genshin.honeyhunterworld.com/img/art/blizzard_walker_4.png"
   }
 ]

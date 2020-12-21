@@ -571,19 +571,19 @@ class Mod(commands.Cog):
                         }
                     )
                     await message.add_reaction('\U00002705')
-                    await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format")
+                    await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format", delete_after=5)
                 else:
                     await message.add_reaction('\U0000274c')
                     temp = await channel.send(f"<@{message.author.id}>,"
-                                              f" hanya bisa memasukan 1 uid Hubungi Admin untuk meng-update")
+                                              f" Anda sudah memasukan data ini, terimakasih :D")
                     await asyncio.sleep(10)
                     await message.delete()
                     await temp.delete()
 
     @commands.command(name='autoscan')
     @commands.has_permissions(administrator=True)
-    async def cmd_autoscan(self, ctx):
-        messages = await ctx.channel.history().flatten()
+    async def cmd_autoscan(self, ctx, limit: int = 100):
+        messages = await ctx.channel.history(limit=limit).flatten()
         for message in messages:
             # print(f'{message}\n')
             raw = message.content.split('\n')
