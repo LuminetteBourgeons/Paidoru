@@ -23,7 +23,6 @@ myDB = myClient['modmail_gii']
 col_bot_log = myDB['bot_log']
 
 
-print(PREFIX)
 class mailModGII(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=PREFIX,

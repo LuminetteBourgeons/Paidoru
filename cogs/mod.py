@@ -523,63 +523,75 @@ class Mod(commands.Cog):
     async def on_message(self, message):
         if message.author == self.client.user:
             return
+        # print(message.type.name)
+        if message.type.name == 'premium_guild_subscription':
+            embed = discord.Embed(
+                timestamp=datetime.today(),
+                colour=discord.Colour.green(),
+                description=f"<@{message.author.id}>, Terimakasih telah mengsupport server kami."
+            )
+            embed.set_image(url="https://pa1.narvii.com/5826/9c1d4a3ff617dd519e3e001b295356e68b760fe3_hq.gif")
+            channel = message.channel
+
+            await channel.send(embed=embed)
         check1 = col_serverinfo.find_one(
             {
                 "guild": message.guild.id,
                 "grab_data": message.channel.id
             }
         )
-        if check1 is None:
-            return
-        # if 'stopscan' in message.content:
-        #     return
-        if message.channel.id in check1['grab_data']:
-            channel = self.client.get_channel(message.channel.id)
+        if check1 is not None:
 
-            raw = message.content.split('\n')
-            nick = ''
-            uid = ''
-            server = ''
-            for data in raw:
-                data = data.split(':')
-                if (data[0]).lower() == 'nick':
-                    nick = data[1]
-                elif (data[0]).lower() == 'uid':
-                    uid = data[1]
-                elif (data[0]).lower() == 'server':
-                    server = data[1]
+            # if 'stopscan' in message.content:
+            #     return
+            if message.channel.id in check1['grab_data']:
+                channel = self.client.get_channel(message.channel.id)
 
-            if nick == '' or uid == '' or server == '':
-                await message.add_reaction('\U0000274c')
-                temp = await channel.send(f"<@{message.author.id}>, masukan data sesuai format")
-                await asyncio.sleep(5)
-                await message.delete()
-                await temp.delete()
-            else:
-                find_members = col_member.find_one(
-                    {
-                        "user": message.author.id,
-                        "uid": uid
-                    }
-                )
-                if find_members is None:
-                    col_member.insert_one(
-                        {
-                            "user": message.author.id,
-                            "uid": uid,
-                            "nick": nick,
-                            "server": server
-                        }
-                    )
-                    await message.add_reaction('\U00002705')
-                    await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format", delete_after=5)
-                else:
+                raw = message.content.split('\n')
+                nick = ''
+                uid = ''
+                server = ''
+                for data in raw:
+                    data = data.split(':')
+                    if (data[0]).lower() == 'nick':
+                        nick = data[1]
+                    elif (data[0]).lower() == 'uid':
+                        uid = data[1]
+                    elif (data[0]).lower() == 'server':
+                        server = data[1]
+
+                if nick == '' or uid == '' or server == '':
                     await message.add_reaction('\U0000274c')
-                    temp = await channel.send(f"<@{message.author.id}>,"
-                                              f" Anda sudah memasukan data ini, terimakasih :D")
-                    await asyncio.sleep(10)
+                    temp = await channel.send(f"<@{message.author.id}>, masukan data sesuai format")
+                    await asyncio.sleep(5)
                     await message.delete()
                     await temp.delete()
+                else:
+                    find_members = col_member.find_one(
+                        {
+                            "user": message.author.id,
+                            "uid": uid
+                        }
+                    )
+                    if find_members is None:
+                        col_member.insert_one(
+                            {
+                                "user": message.author.id,
+                                "uid": uid,
+                                "nick": nick,
+                                "server": server
+                            }
+                        )
+                        await message.add_reaction('\U00002705')
+                        await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format", delete_after=5)
+                    else:
+                        await message.add_reaction('\U0000274c')
+                        temp = await channel.send(f"<@{message.author.id}>,"
+                                                  f" Anda sudah memasukan data ini, terimakasih :D")
+                        await asyncio.sleep(10)
+                        await message.delete()
+                        await temp.delete()
+
 
     @commands.command(name='autoscan')
     @commands.has_permissions(administrator=True)
@@ -632,6 +644,21 @@ class Mod(commands.Cog):
     async def cmd_eval(self, ctx, *, content):
         print(content)
         await ctx.send(eval(content))
+
+    @commands.command(name='connect')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_connect(self, ctx):
+        channel = ctx.author.voice.channel
+        print(type(channel))
+        await channel.connect(timeout=86400)
+
+    @commands.command(name='disconnect')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_disconnect(self, ctx):
+        await ctx.voice_client.disconnect(force=True)
+
 
 def setup(client):
     client.add_cog(Mod(client))
