@@ -671,14 +671,14 @@ class Mod(commands.Cog):
     async def cmd_connect(self, ctx):
         channel = ctx.author.voice.channel
         print(type(channel))
-        await channel.connect(timeout=86400)
+        await channel.connect(timeout=6000)
 
     @commands.command(name='disconnect')
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     async def cmd_disconnect(self, ctx):
-        await ctx.voice_client.disconnect(force=True)
-
+        # channel = ctx.member.voice
+        await ctx.voice_client.disconnect()
 
 def setup(client):
     client.add_cog(Mod(client))
