@@ -522,6 +522,7 @@ class Mod(commands.Cog):
     @commands.command(name='grabimage')
     @commands.has_permissions(administrator=True)
     async def cmd_grabimage(self, ctx, user: discord.User = None, limit: int = 10):
+        await ctx.message.delete()
         if user is None:
             return
         else:
@@ -530,9 +531,14 @@ class Mod(commands.Cog):
                 attachments = each.attachments
                 if len(attachments) == 0 or each.author != user:
                     continue
-                print(each.attachments)
+
                 for attachment in attachments:
-                    await ctx.author.send(f"`<{attachment.url}>`")
+                    # print(attachment.url[len(attachment.url)-1])
+                    # print(type(attachment.url))
+                    format_filter = attachment.url[len(attachment.url)-5:len(attachment.url)]
+                    format2 = format_filter.split('.')
+                    format2 = format2[1]
+                    await ctx.author.send(f"<{attachment.url}> {attachment.id}.{format2}")
 
     @commands.Cog.listener()
     async def on_message(self, message):
