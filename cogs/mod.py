@@ -519,6 +519,21 @@ class Mod(commands.Cog):
             )
             await ctx.send('done!', delete_after=5)
 
+    @commands.command(name='grabimage')
+    @commands.has_permissions(administrator=True)
+    async def cmd_grabimage(self, ctx, user: discord.User = None, limit: int = 10):
+        if user is None:
+            return
+        else:
+            messages = await ctx.channel.history(limit=limit).flatten()
+            for each in messages:
+                attachments = each.attachments
+                if len(attachments) == 0 or each.author != user:
+                    continue
+                print(each.attachments)
+                for attachment in attachments:
+                    await ctx.author.send(f"`<{attachment.url}>`")
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.client.user:
