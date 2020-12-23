@@ -535,9 +535,8 @@ class Mod(commands.Cog):
                 for attachment in attachments:
                     # print(attachment.url[len(attachment.url)-1])
                     # print(type(attachment.url))
-                    format_filter = attachment.url[len(attachment.url)-5:len(attachment.url)]
-                    format2 = format_filter.split('.')
-                    format2 = format2[1]
+                    format2 = attachment.url.split('.')
+                    format2 = format2[len(format2)-1]
                     await ctx.author.send(f"<{attachment.url}> {attachment.id}.{format2}")
 
     @commands.Cog.listener()
