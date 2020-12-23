@@ -5,6 +5,7 @@ import pymongo
 import json
 import asyncio
 import os
+import random
 from boto.s3.connection import S3Connection
 s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
@@ -26,6 +27,7 @@ col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
 col_command_log = myDB['command_log']
 col_tags = myDB['tags']
+col_fun = myDB['fun']
 
 
 class General(commands.Cog):
@@ -307,6 +309,26 @@ class General(commands.Cog):
             tags_string += f" `{tag['tag']}`,"
         tags_string = tags_string[0:len(tags_string) - 1]
         await ctx.send(tags_string)
+
+    @commands.command(name='hug')
+    @checker(None, "hug")
+    async def cmd_hug(self, ctx, user: discord.User = None):
+        if user is None:
+            return
+        if user == ctx.author:
+            message = await ctx.send("Can't hug yourself")
+            await message.add_reaction('\U0001f1eb')
+            return
+        img_url = list(col_fun.find({'hug': {'$exists': True}}))[0]['hug']
+        img = random.choice(img_url)
+        embed = discord.Embed(
+            color=discord.Colour.blue(),
+            title=f"{ctx.author.name} hugs {user.name}"
+        )
+        embed.set_image(
+            url=img
+        )
+        await ctx.send(embed=embed)
 
 
 def setup(client):
