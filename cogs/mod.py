@@ -538,7 +538,7 @@ class Mod(commands.Cog):
                 # print(type(attachment.url))
                 format2 = attachment.url.split('.')
                 format2 = format2[len(format2)-1]
-                await ctx.author.send(f"<{attachment.url}> {each.author}_{attachment.id}.{format2}")
+                await ctx.author.send(f"<{attachment.url}> {each.author.name.replace(' ','_')}_{attachment.id}.{format2}")
 
     @commands.Cog.listener()
     async def on_message(self, message):
