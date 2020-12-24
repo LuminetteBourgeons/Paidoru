@@ -9,11 +9,11 @@
 <h4 align="center">Indonesian Games, Music, Podcast, Giveaway, Community</h4>
 
 <p align="center">
-  <!--
-  <a href="https://discord.gg/EXycJbN">
+  
+  <a href="https://discord.gg/VV6cfmFT7V">
     <img src="https://discordapp.com/api/guilds/790854534918307840/widget.png?style=shield" alt="Discord Server">
   </a>
--->
+
   
   <a href="https://github.com/Rapptz/discord.py/">
      <img src="https://img.shields.io/badge/discord-py-blue.svg" alt="discord.py">
