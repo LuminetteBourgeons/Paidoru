@@ -5,6 +5,7 @@ import pymongo
 import json
 import asyncio
 import os
+import random
 from boto.s3.connection import S3Connection
 s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
@@ -20,6 +21,7 @@ col_greeting_msg = myDB['greeting_msg']
 col_disable = myDB['disable']
 col_tags = myDB['tags']
 col_member = myDB['members']
+col_fun = myDB['fun']
 
 
 class Mod(commands.Cog):
@@ -546,12 +548,15 @@ class Mod(commands.Cog):
             return
         # print(message.type.name)
         if message.type.name == 'premium_guild_subscription':
+        # if message.type.name == 'default':
             embed = discord.Embed(
                 timestamp=datetime.today(),
                 colour=discord.Colour.green(),
-                description=f"<@{message.author.id}>, Terimakasih telah mengsupport server kami."
+                description=f"**{message.author.name}**, Terimakasih telah mengsupport server kami."
             )
-            embed.set_image(url="https://pa1.narvii.com/5826/9c1d4a3ff617dd519e3e001b295356e68b760fe3_hq.gif")
+            img_url = list(col_fun.find({'thanks': {'$exists': True}}))[0]['thanks']
+            img = random.choice(img_url)
+            embed.set_image(url=img)
             channel = message.channel
 
             await channel.send(embed=embed)
@@ -669,10 +674,11 @@ class Mod(commands.Cog):
     @commands.command(name='connect')
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
-    async def cmd_connect(self, ctx):
+    async def cmd_connect(self, ctx, timeout=60):
         channel = ctx.author.voice.channel
         print(type(channel))
-        await channel.connect(timeout=6000)
+        await channel.connect(timeout=timeout)
+        await ctx.message.delete()
 
     @commands.command(name='disconnect')
     @commands.has_permissions(administrator=True)
@@ -680,6 +686,7 @@ class Mod(commands.Cog):
     async def cmd_disconnect(self, ctx):
         # channel = ctx.member.voice
         await ctx.voice_client.disconnect()
+        await ctx.message.delete()
 
 def setup(client):
     client.add_cog(Mod(client))
