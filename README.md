@@ -19,3 +19,8 @@
      <img src="https://img.shields.io/badge/discord-py-blue.svg" alt="discord.py">
   </a>
 </p>
+### Contributors
+- Galih Setyawan - *Initialize GitHub Actions workflow* - [Galih Setyawan](https://github.com/Nawaytes)
+
+### Thanks to
+[Danny](https://github.com/Rapptz)
