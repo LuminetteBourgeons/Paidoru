@@ -330,6 +330,46 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    @commands.command(name='kiss')
+    @checker(None, "kiss")
+    async def cmd_kiss(self, ctx, user: discord.User = None):
+        if user is None:
+            return
+        if user == ctx.author:
+            message = await ctx.send("Can't kiss yourself")
+            await message.add_reaction('\U0001f1eb')
+            return
+        img_url = list(col_fun.find({'kiss': {'$exists': True}}))[0]['kiss']
+        img = random.choice(img_url)
+        embed = discord.Embed(
+            color=discord.Colour.blue(),
+            title=f"{ctx.author.name} kiss {user.name}"
+        )
+        embed.set_image(
+            url=img
+        )
+        await ctx.send(embed=embed)
+
+    @commands.command(name='pat')
+    @checker(None, "pat")
+    async def cmd_pats(self, ctx, user: discord.User = None):
+        if user is None:
+            return
+        if user == ctx.author:
+            message = await ctx.send("Can't pat yourself")
+            await message.add_reaction('\U0001f1eb')
+            return
+        img_url = list(col_fun.find({'pat': {'$exists': True}}))[0]['pat']
+        img = random.choice(img_url)
+        embed = discord.Embed(
+            color=discord.Colour.blue(),
+            title=f"{ctx.author.name} pats {user.name}"
+        )
+        embed.set_image(
+            url=img
+        )
+        await ctx.send(embed=embed)
+
 
 def setup(client):
     client.add_cog(General(client))
