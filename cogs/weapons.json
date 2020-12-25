@@ -1118,7 +1118,7 @@
     "passive": "Golden Majesty",
     "bonus": "Increases Shield Strength by 20%. Scoring hits on opponents increases ATK by 4% for 8s. Max 5 stacks. Can only occur once every 0.3s. While protected by a shield, this ATK increase effect is increased by 100%. \n",
     "location": "Gacha",
-    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422954394910760/unknown.png"
+    "img": "https://genshin.honeyhunterworld.com/img/weapon/summit_shaper.png"
   },
   {
     "name": "Festering Desire",
@@ -1129,7 +1129,7 @@
     "passive": "Undying Admiration",
     "bonus": "Incrases Elemental Skill DMG by 16% and Elemental Skill CRIT Rata be 6%.",
     "location": "Craft",
-    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422868604223498/unknown.png"
+    "img": "https://genshin.honeyhunterworld.com/img/weapon/festering_fang.png"
   },
   {
     "name": "Snow-Tombed Starsilver",
@@ -1140,7 +1140,7 @@
     "passive": "Frost Burial",
     "bonus": "Hitting an opponent with Normal and Charged Attacks has a 60% chance of forming and dropping an Everfrost Icicle above them, dealing 80% AoE ATK DMG. Opponents affected by Cryo are dealt 200% ATK DMG. Can only occur once every 10s. ",
     "location": "Craft",
-    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422673867014154/unknown.png"
+    "img": "https://genshin.honeyhunterworld.com/img/weapon/snow_tombed_starsilver.png"
   },
   {
     "name": "Dragonspine Spear",
@@ -1151,6 +1151,6 @@
     "passive": "Frost Burial",
     "bonus": "Hitting an opponent with Normal and Charged Attacks has a 60% chance of forming and dropping an Everfrost Icicle above them, dealing 80% AoE ATK DMG. Opponents affected by Cryo are dealt 200% ATK DMG. Can only occur once every 10s. ",
     "location": "Craft",
-    "img": "https://cdn.discordapp.com/attachments/770674382854684702/790422591533613086/unknown.png"
+    "img": "https://genshin.honeyhunterworld.com/img/weapon/dragonspine_spear.png"
   }
 ]
