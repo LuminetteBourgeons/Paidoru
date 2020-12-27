@@ -688,5 +688,32 @@ class Mod(commands.Cog):
         await ctx.voice_client.disconnect()
         await ctx.message.delete()
 
+    @commands.command(name='count')
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    async def cmd_count_like(self, ctx, emoji: discord.Emoji = None, limit: int= 10):
+        await ctx.message.delete()
+        messages = await ctx.channel.history(limit=limit).flatten()
+
+        top1 = ''
+        top2 = ''
+        top3 = ''
+
+        for each in messages:
+            attachments = each.attachments
+            reactions = each.reactions
+            # print(reactions)
+
+            if len(attachments) == 0:
+                continue
+            count = 0
+            for reaction in reactions:
+                if reaction.emoji.name == emoji.name and reaction.emoji.id == emoji.id:
+                    count = reaction.count
+
+            strings = f"{ctx.author},{count}"
+            await ctx.author.send(strings)
+
+
 def setup(client):
     client.add_cog(Mod(client))
