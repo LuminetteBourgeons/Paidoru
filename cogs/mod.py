@@ -711,7 +711,7 @@ class Mod(commands.Cog):
                 if reaction.emoji.name == emoji.name and reaction.emoji.id == emoji.id:
                     count = reaction.count
 
-            strings = f"{ctx.author},{count}"
+            strings = f"{each.author},{count}"
             await ctx.author.send(strings)
 
 
