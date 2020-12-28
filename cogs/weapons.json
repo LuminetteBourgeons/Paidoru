@@ -1152,5 +1152,16 @@
     "bonus": "Hitting an opponent with Normal and Charged Attacks has a 60% chance of forming and dropping an Everfrost Icicle above them, dealing 80% AoE ATK DMG. Opponents affected by Cryo are dealt 200% ATK DMG. Can only occur once every 10s. ",
     "location": "Craft",
     "img": "https://genshin.honeyhunterworld.com/img/weapon/dragonspine_spear.png"
+  },
+  {
+    "name": "Frostbearer",
+    "type": "Catalist",
+    "rarity": 4,
+    "atk": 42,
+    "secondary": "ATK%",
+    "passive": "Frost Burial",
+    "bonus": "Hitting an opponent with Normal and Charged Attacks has a 60/70/80/90/100% chance of forming and dropping an Everfrost Icicle above them, dealing 80/95/110/125/140% AoE ATK DMG. Opponents affected by Cryo are dealt 200/240/280/320/360% ATK DMG. Can only occur once every 10s.",
+    "location": "Craft",
+    "img": "https://genshin.honeyhunterworld.com/img/weapon/frostbearer.png"
   }
 ]
