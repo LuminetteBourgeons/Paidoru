@@ -7,8 +7,8 @@ import asyncio
 import os
 import random
 from boto.s3.connection import S3Connection
-s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
+s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
 with open('cogs/help.json') as json_file:
     f_help = json.load(json_file)
@@ -523,7 +523,7 @@ class Mod(commands.Cog):
 
     @commands.command(name='grabimage')
     @commands.has_permissions(administrator=True)
-    async def cmd_grabimage(self, ctx,limit: int = 10, user: discord.User = None):
+    async def cmd_grabimage(self, ctx, limit: int = 10, user: discord.User = None):
         await ctx.message.delete()
 
         messages = await ctx.channel.history(limit=limit).flatten()
@@ -539,16 +539,18 @@ class Mod(commands.Cog):
                 # print(attachment.url[len(attachment.url)-1])
                 # print(type(attachment.url))
                 format2 = attachment.url.split('.')
-                format2 = format2[len(format2)-1]
-                await ctx.author.send(f"<{attachment.url}> {each.author.name.replace(' ','_')}_{attachment.id}.{format2}")
+                format2 = format2[len(format2) - 1]
+                await ctx.author.send(
+                    f"<{attachment.url}> {each.author.name.replace(' ', '_')}_{attachment.id}.{format2}")
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.author == self.client.user:
             return
         # print(message.type.name)
-        if message.type.name == 'premium_guild_subscription':
-        # if message.type.name == 'default':
+        if message.type.name in ['premium_guild_subscription', 'premium_guild_tier_1', 'premium_guild_tier_2',
+                                 'premium_guild_tier_3']:
+            # if message.type.name == 'default':
             embed = discord.Embed(
                 timestamp=datetime.today(),
                 colour=discord.Colour.green(),
@@ -609,7 +611,8 @@ class Mod(commands.Cog):
                             }
                         )
                         await message.add_reaction('\U00002705')
-                        await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format", delete_after=5)
+                        await channel.send(f"Terimakasih <@{message.author.id}>, sudah mengisi sesuai format",
+                                           delete_after=5)
                     else:
                         await message.add_reaction('\U0000274c')
                         temp = await channel.send(f"<@{message.author.id}>,"
@@ -617,7 +620,6 @@ class Mod(commands.Cog):
                         await asyncio.sleep(10)
                         await message.delete()
                         await temp.delete()
-
 
     @commands.command(name='autoscan')
     @commands.has_permissions(administrator=True)
@@ -632,7 +634,7 @@ class Mod(commands.Cog):
             for data in raw:
                 data = data.split(':')
                 print(data)
-                if (data[0]).lower().strip() in ['ign','nick']:
+                if (data[0]).lower().strip() in ['ign', 'nick']:
                     nick = data[1]
                 elif (data[0]).lower().strip() == 'uid':
                     uid = data[1]
@@ -691,7 +693,7 @@ class Mod(commands.Cog):
     @commands.command(name='count')
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
-    async def cmd_count_like(self, ctx, emoji: discord.Emoji = None, limit: int= 10):
+    async def cmd_count_like(self, ctx, emoji: discord.Emoji = None, limit: int = 10):
         await ctx.message.delete()
         messages = await ctx.channel.history(limit=limit).flatten()
 
