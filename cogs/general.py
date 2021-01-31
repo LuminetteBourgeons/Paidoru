@@ -297,6 +297,10 @@ class General(commands.Cog):
                     color=discord.Colour.orange()
                 )
                 await ctx.send(embed=embed)
+            elif find_tag['type'].lower() == 'json'.lower():
+                f = json.loads(str(find_tag['description']))
+                test_embed = discord.Embed.from_dict(f)
+                await ctx.send(embed=test_embed)
             else:
                 await ctx.send(find_tag['description'])
 

@@ -31,6 +31,7 @@ class mailModGII(commands.Bot):
         self.client = commands.Bot
 
         self.client.remove_command(self, name='help')
+        self.client.remove_command(self, name='stop')
         self.load_extension('cogs.redirectmail')
         self.load_extension('cogs.greeting')
         self.load_extension('cogs.mod')
@@ -67,6 +68,10 @@ class mailModGII(commands.Bot):
 
         if isinstance(error, commands.ChannelNotFound):
             await ctx.send(f'channel not found')
+            return
+        if isinstance(error, commands.errors.CommandInvokeError):
+            await ctx.send(f'error')
+            return
         raise error
 
     def run(self):

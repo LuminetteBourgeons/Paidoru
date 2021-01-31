@@ -6,6 +6,7 @@ import json
 import asyncio
 import os
 import random
+import http
 from boto.s3.connection import S3Connection
 
 s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
@@ -386,12 +387,13 @@ class Mod(commands.Cog):
     @commands.command(name='tagadd')
     @commands.has_permissions(administrator=True)
     async def cmd_tagadd(self, ctx, isembed: str = 'nonEmbed'):
-        if isembed.lower() not in ['nonembed', 'embed']:
+        if isembed.lower() not in ['nonembed', 'embed', 'json']:
             return
         await ctx.send('type a tag (15s timeout), type `cancel` for abort')
         print(ctx.message.channel)
 
         def check(m):
+
             return m.channel == ctx.message.channel and m.author == ctx.author
 
         tag = ''
@@ -402,13 +404,13 @@ class Mod(commands.Cog):
                 await ctx.send('aborted')
                 return
             tag = message.content
-            print(message.content)
+            # print(message.content)
         except asyncio.TimeoutError:
             await ctx.send('timeout')
             return
 
         find_tag = col_tags.find_one({"tag": tag})
-        print(find_tag)
+        # print(find_tag)
         if find_tag is not None:
             await ctx.send('the tag is already')
             return
@@ -418,6 +420,21 @@ class Mod(commands.Cog):
             if message.content.lower() == 'cancel':
                 await ctx.send('aborted')
                 return
+            if isembed.lower() == 'json':
+                try:
+                    # print(message.content)
+                    f = json.loads(str(message.content))
+                    print(f)
+                    print('^json')
+
+                    test_embed = discord.Embed.from_dict(f)
+                    await ctx.send(embed=test_embed)
+
+                except json.JSONDecodeError or http.client.HTTPException:
+                    await ctx.send('JSON ERROR')
+                    return
+
+
             description = message.content
             print(message.content)
         except asyncio.TimeoutError:
@@ -434,6 +451,8 @@ class Mod(commands.Cog):
                 color=discord.Colour.orange()
             )
             await ctx.send(embed=embed)
+        elif isembed.lower() == 'json':
+            pass
         else:
             await ctx.send(description)
 
@@ -715,7 +734,6 @@ class Mod(commands.Cog):
 
             strings = f"{each.author},{count}"
             await ctx.author.send(strings)
-
 
 def setup(client):
     client.add_cog(Mod(client))
