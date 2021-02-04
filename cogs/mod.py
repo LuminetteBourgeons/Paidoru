@@ -82,7 +82,7 @@ class Mod(commands.Cog):
                 "target": 0
             }
         }
-        if col_serverinfo.find_one() is None:
+        if col_serverinfo.find_one({"guild": ctx.guild.id}) is None:
             col_serverinfo.insert_one(serverinfo)
             await ctx.send(f"hi <@{ctx.author.id}>!!!, this server is ready to use mailmod", delete_after=5)
         else:
