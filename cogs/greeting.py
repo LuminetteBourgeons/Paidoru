@@ -159,7 +159,7 @@ class GreetingMessage(commands.Cog):
         if ctx.author == self.client.user:
             return
         users = ctx.author.mention
-        message_str = str(col_serverinfo.find_one()['greeting_message'])
+        message_str = str(col_serverinfo.find_one({'guild': ctx.guild.id})['greeting_message'])
         xx = message_str.replace("{user.mention}", users)
         await ctx.send(xx)
 
