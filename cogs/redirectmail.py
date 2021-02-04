@@ -12,7 +12,8 @@ s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
-myDB = myClient['modmail_gii']
+# myDB = myClient['modmail_gii']
+myDB = myClient[os.environ['DB_NAME']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']

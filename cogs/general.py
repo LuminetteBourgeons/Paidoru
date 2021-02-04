@@ -20,7 +20,8 @@ with open('cogs/help.json') as json_file:
     f_help = json.load(json_file)
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
-myDB = myClient['modmail_gii']
+# myDB = myClient['modmail_gii']
+myDB = myClient[os.environ['DB_NAME']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']

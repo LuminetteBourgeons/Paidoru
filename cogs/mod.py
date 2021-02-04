@@ -15,7 +15,8 @@ with open('cogs/help.json') as json_file:
     f_help = json.load(json_file)
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
-myDB = myClient['modmail_gii']
+# myDB = myClient['modmail_gii']
+myDB = myClient[os.environ['DB_NAME']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
@@ -59,7 +60,7 @@ class Mod(commands.Cog):
         await user.send('This bot can only be used by server owners, bot owners, and admins')
 
     @commands.command(name='setup')
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     @commands.guild_only()
     async def cmd_setup(self, ctx):
         '''
@@ -75,6 +76,7 @@ class Mod(commands.Cog):
             "guild_owner": ctx.guild.owner.id,
             "greeting": False,
             "greeting_message": "Hai selamat datang di channel ini!",
+            "channel_greeting": "",
             "reply": {
                 "lock": False,
                 "target": 0
@@ -430,7 +432,7 @@ class Mod(commands.Cog):
                     test_embed = discord.Embed.from_dict(f)
                     await ctx.send(embed=test_embed)
 
-                except json.JSONDecodeError or http.client.HTTPException:
+                except json.JSONDecodeError:
                     await ctx.send('JSON ERROR')
                     return
 

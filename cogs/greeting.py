@@ -10,7 +10,8 @@ s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
 
 
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
-myDB = myClient['modmail_gii']
+# myDB = myClient['modmail_gii']
+myDB = myClient[os.environ['DB_NAME']]
 col_botinfo = myDB['botinfo']
 col_serverinfo = myDB['serverinfo']
 col_greeting_msg = myDB['greeting_msg']
@@ -35,15 +36,21 @@ class GreetingMessage(commands.Cog):
             return
         # print('new member join 2')
         greet_str = col_serverinfo.find_one({'guild': member.guild.id})['greeting_message']
+        srvinf = col_serverinfo.find_one({'guild': member.guild.id})
+        channel = self.client.get_channel(srvinf['channel_greeting'])
+
+        msg = greet_str.replace('{user.mention}',member.mention)
+
         # print(member.guild.id)
         if greet_str is None:
             return
-        await member.send(greet_str)
+        # await member.send(greet_str)
+        await channel.send(msg)
 
     @commands.command()
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     @commands.guild_only()
-    async def run(self, ctx):
+    async def run(self, ctx, channel: discord.TextChannel = None):
         '''
 
         :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
@@ -52,7 +59,8 @@ class GreetingMessage(commands.Cog):
         if col_serverinfo.find_one({'guild': ctx.guild.id})['greeting'] is True:
             await ctx.send('the command has started', delete_after=3)
             return
-
+        if channel is None:
+            return
         confirm_message = await ctx.send('are you sure you want to run the greeting message privately')
         await confirm_message.add_reaction(self.emj[0])
         await confirm_message.add_reaction(self.emj[1])
@@ -64,7 +72,7 @@ class GreetingMessage(commands.Cog):
             reaction, user = await self.client.wait_for('reaction_add', timeout=10, check=check)
             # print(str(reaction))
             if str(reaction) == '\N{WHITE HEAVY CHECK MARK}':
-                col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting': True}})
+                col_serverinfo.update_one({'guild': ctx.guild.id}, {'$set': {'greeting': True, 'channel_greeting': channel.id}})
                 await confirm_message.edit(content='the greeting message has started')
             else:
                 await confirm_message.edit(content='Canceled')
@@ -73,7 +81,7 @@ class GreetingMessage(commands.Cog):
             await confirm_message.edit(content="You ran out of time!")
 
     @commands.command(name="stop")
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     @commands.guild_only()
     async def cmd_stop_greeting_message(self, ctx):
         '''
@@ -89,7 +97,7 @@ class GreetingMessage(commands.Cog):
         await ctx.send('the greeting message has stopped', delete_after=5)
 
     @commands.group(name='change')
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     @commands.guild_only()
     async def group_change(self, ctx):
         '''
@@ -101,7 +109,7 @@ class GreetingMessage(commands.Cog):
             await ctx.send('Invalid command passed...')
 
     @commands.group(name='show')
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     @commands.guild_only()
     async def group_show(self, ctx):
         '''
@@ -113,7 +121,6 @@ class GreetingMessage(commands.Cog):
             await ctx.send('Invalid git command passed...')
 
     @group_change.command(name='message')
-    @commands.is_owner()
     async def change_message(self, ctx):
         '''
 
@@ -124,7 +131,8 @@ class GreetingMessage(commands.Cog):
                                          delete_after=15)
         await confirm_message.add_reaction(self.emj[0])
         await confirm_message.add_reaction(self.emj[1])
-        cmd = 'pai change message'
+        cmd = 'pai change message '
+        users = ctx.author.mention
         col_serverinfo.update_one({'guild': ctx.guild.id},
                                   {'$set': {'greeting_message': ctx.message.content.replace(cmd, '')}})
 
@@ -143,17 +151,17 @@ class GreetingMessage(commands.Cog):
             await confirm_message.edit(content="You ran out of time!")
 
     @group_show.command(name='message')
-    @commands.is_owner()
     async def show_message(self, ctx):
         '''
-
         :param ctx: https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.Context
         :return:
         '''
         if ctx.author == self.client.user:
             return
-        message_str = col_serverinfo.find_one()['greeting_message']
-        await ctx.send(message_str)
+        users = ctx.author.mention
+        message_str = str(col_serverinfo.find_one()['greeting_message'])
+        xx = message_str.replace("{user.mention}", users)
+        await ctx.send(xx)
 
 
 def setup(client):
