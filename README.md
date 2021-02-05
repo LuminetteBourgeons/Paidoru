@@ -32,6 +32,7 @@ pip install -r requirements.txt
 ### Config Vars
 - DISCORD_BOT_TOKEN
 - MONGO_CLIENT
+- DB_NAME
 
 ### Contributors
 - Galih Setyawan - *Initialize GitHub Actions workflow* - [Galih Setyawan](https://github.com/Nawaytes)
