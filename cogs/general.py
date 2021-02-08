@@ -6,8 +6,7 @@ import json
 import asyncio
 import os
 import random
-from boto.s3.connection import S3Connection
-s3 = S3Connection(os.environ['DISCORD_BOT_TOKEN'], os.environ['MONGO_CLIENT'])
+
 
 
 with open('cogs/weapons.json') as json_file:
