@@ -375,6 +375,12 @@ class General(commands.Cog):
         )
         await ctx.send(embed=embed)
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author == self.client.user:
+            return
+        pass
+
 
 def setup(client):
     client.add_cog(General(client))
