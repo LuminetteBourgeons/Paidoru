@@ -7,9 +7,6 @@ import asyncio
 import datetime
 import os
 
-
-
-
 myClient = pymongo.MongoClient(os.environ['MONGO_CLIENT'])
 # myDB = myClient['modmail_gii']
 myDB = myClient[os.environ['DB_NAME']]

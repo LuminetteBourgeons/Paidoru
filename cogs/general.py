@@ -8,7 +8,6 @@ import os
 import random
 
 
-
 with open('cogs/weapons.json') as json_file:
     f_weapons = json.load(json_file)
 
